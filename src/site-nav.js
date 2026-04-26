@@ -265,12 +265,115 @@ function searchWithoutLegacyPath() {
 }
 
 /**
+ * @param {string} text
+ * @param {string[]} terms — lowercased, non-empty
+ * @returns {[number, number][] | null} merged [start, end) byte pairs in `text` (code unit indices)
+ */
+function mergeMatchRanges(/** @type {string} */ text, /** @type {string[]} */ terms) {
+  if (!terms.length) {
+    return null;
+  }
+  const low = text.toLowerCase();
+  /** @type {[number, number][]} */
+  const ranges = [];
+  for (const term of terms) {
+    if (!term) {
+      continue;
+    }
+    let i = 0;
+    while (i < low.length) {
+      const j = low.indexOf(term, i);
+      if (j < 0) {
+        break;
+      }
+      ranges.push([j, j + term.length]);
+      i = j + 1;
+    }
+  }
+  if (ranges.length === 0) {
+    return null;
+  }
+  ranges.sort((a, b) => a[0] - b[0]);
+  /** @type {[number, number][]} */
+  const merged = [];
+  let cur = ranges[0];
+  for (let k = 1; k < ranges.length; k++) {
+    const r = ranges[k];
+    if (r[0] < cur[1]) {
+      cur[1] = Math.max(cur[1], r[1]);
+    } else {
+      merged.push(cur);
+      cur = r;
+    }
+  }
+  merged.push(cur);
+  return merged;
+}
+
+/**
+ * Replaces `el` content with `text`, wrapping each character range that matches a search term in `<mark>`.
+ * @param {HTMLElement} el
+ * @param {string} text
+ * @param {string[]} highlightTerms — lowercased, non-empty
+ */
+function setNavTitleWithHighlights(/** @type {HTMLElement} */ el, /** @type {string} */ text, /** @type {string[]} */ highlightTerms) {
+  el.textContent = "";
+  if (!highlightTerms.length) {
+    el.appendChild(document.createTextNode(text));
+    return;
+  }
+  const merged = mergeMatchRanges(text, highlightTerms);
+  if (!merged || merged.length === 0) {
+    el.appendChild(document.createTextNode(text));
+    return;
+  }
+  let pos = 0;
+  for (const [a, b] of merged) {
+    if (pos < a) {
+      el.appendChild(document.createTextNode(text.slice(pos, a)));
+    }
+    const mark = document.createElement("mark");
+    mark.className = "yamd-nav__mark";
+    mark.appendChild(document.createTextNode(text.slice(a, b)));
+    el.appendChild(mark);
+    pos = b;
+  }
+  if (pos < text.length) {
+    el.appendChild(document.createTextNode(text.slice(pos)));
+  }
+}
+
+/**
+ * @param {Set<string> | null | undefined} pathFilter
+ *   When set, only show items whose `path` is in the set, or a branch that
+ *   contains a matching path under it (so section headers stay as ancestors).
+ *   `null`/`undefined` = show the full tree.
+ * @param {string} cNorm
+ * @param {(p: string) => void} onNavigate
+ */
+function hasNavMatch(/** @type {NavItem} */ n, /** @type {Set<string>} */ pathFilter) {
+  if (n.path && pathFilter.has(norm(n.path))) {
+    return true;
+  }
+  if (n.items) {
+    for (const c of n.items) {
+      if (hasNavMatch(c, pathFilter)) {
+        return true;
+      }
+    }
+  }
+  return false;
+}
+
+/**
  * @param {HTMLElement} el
  * @param {NavItem[]} items
  * @param {string} currentPath
  * @param {(p: string) => void} onNavigate
+ * @param {Set<string> | null} [pathFilter] — if set, filter nav to matching paths
+ * @param {string} [highlightQuery] — if non-empty, mark matching substrings in nav labels (case-insensitive, all words)
  */
-export function renderNavTree(el, items, currentPath, onNavigate) {
+export function renderNavTree(el, items, currentPath, onNavigate, pathFilter, highlightQuery) {
   el.textContent = "";
   const nav = document.createElement("nav");
   nav.className = "yamd-nav";
@@ -278,8 +381,13 @@ export function renderNavTree(el, items, currentPath, onNavigate) {
   const ul = document.createElement("ul");
   ul.className = "yamd-nav__list yamd-nav__list--root";
   const cNorm = norm(currentPath);
+  const hq = (highlightQuery && String(highlightQuery).trim()) || "";
+  const hTerms = hq
+    .toLowerCase()
+    .split(/\s+/)
+    .filter((s) => s.length > 0);
   for (const n of items) {
-    const li = renderNavItem(n, cNorm, onNavigate);
+    const li = renderNavItem(n, cNorm, onNavigate, pathFilter, hTerms);
     if (li) {
       ul.appendChild(li);
     }
@@ -292,14 +400,19 @@ export function renderNavTree(el, items, currentPath, onNavigate) {
  * @param {NavItem} n
  * @param {string} cNorm
  * @param {(p: string) => void} onNavigate
+ * @param {Set<string> | null} pathFilter
+ * @param {string[]} highlightTerms — lowercased search tokens for <mark> in titles
  */
-function renderNavItem(n, cNorm, onNavigate) {
+function renderNavItem(/** @type {NavItem} */ n, cNorm, onNavigate, pathFilter, highlightTerms) {
+  if (pathFilter != null && !hasNavMatch(n, pathFilter)) {
+    return null;
+  }
   const li = document.createElement("li");
   li.className = "yamd-nav__item";
   if (n.path) {
     const a = document.createElement("a");
     a.className = "yamd-nav__link" + (n.items && n.items.length ? " yamd-nav__link--branch" : "");
-    a.textContent = n.title;
+    setNavTitleWithHighlights(a, n.title, highlightTerms);
     a.href = pathToHref(n.path);
     a.dataset.path = n.path;
     if (cNorm && norm(n.path) === cNorm) {
@@ -316,14 +429,14 @@ function renderNavItem(n, cNorm, onNavigate) {
   } else {
     const t = document.createElement("span");
     t.className = "yamd-nav__label";
-    t.textContent = n.title;
+    setNavTitleWithHighlights(t, n.title, highlightTerms);
     li.appendChild(t);
   }
   if (n.items && n.items.length) {
     const sub = document.createElement("ul");
     sub.className = "yamd-nav__sub";
     for (const c of n.items) {
-      const ch = renderNavItem(c, cNorm, onNavigate);
+      const ch = renderNavItem(c, cNorm, onNavigate, pathFilter, highlightTerms);
       if (ch) {
         sub.appendChild(ch);
       }

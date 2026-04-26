@@ -1,5 +1,5 @@
 import yaml from "https://esm.sh/yaml@2.8.0?bundle";
-import { contentUrl } from "./site-nav.js";
+import { contentUrl, norm } from "./site-nav.js";
 
 /**
  * @typedef {{ path: string, navLabel: string, docTitle: string, haystack: string }} IndexRow
@@ -122,24 +122,23 @@ function makeRowFromNavOnly(/** @type {{ path: string, label: string }} */ e) {
 }
 
 /**
+ * All page paths (normalized) that match the same rules as search (and query).
  * @param {IndexRow[]} index
  * @param {string} q
- * @param {number} [limit]
- * @returns {{ path: string, title: string, sub: string, score: number }[]}
+ * @returns {Set<string>}
  */
-export function searchIndex(/** @type {IndexRow[]} */ index, /** @type {string} */ q, limit = 12) {
+export function matchingPathsForQuery(/** @type {IndexRow[]} */ index, /** @type {string} */ q) {
   const t = String(q)
     .trim()
     .toLowerCase();
+  const out = new Set();
   if (!t) {
-    return [];
+    return out;
   }
   const terms = t.split(/\s+/).filter((s) => s.length > 0);
   if (terms.length === 0) {
-    return [];
+    return out;
   }
-  /** @type {{ path: string, title: string, sub: string, score: number }[]} */
-  const scored = [];
   for (const row of index) {
     const titleL = (row.docTitle + " " + row.navLabel).toLowerCase();
     let allTerms = true;
@@ -149,41 +148,54 @@ export function searchIndex(/** @type {IndexRow[]} */ index, /** @type {string} 
         break;
       }
     }
-    if (!allTerms) {
-      continue;
+    if (allTerms) {
+      out.add(norm(row.path));
     }
-    let score = 0;
-    for (const term of terms) {
-      if (titleL.includes(term)) {
-        score += 4;
-      }
-      if (row.haystack.includes(term)) {
-        score += 1;
-      }
-    }
-    const displayTitle = row.docTitle || row.navLabel || row.path;
-    const sub = row.docTitle && row.navLabel && row.docTitle !== row.navLabel ? row.navLabel : row.path;
-    scored.push({ path: row.path, title: displayTitle, sub, score });
   }
-  scored.sort((a, b) => b.score - a.score || a.title.localeCompare(b.title));
-  return scored.slice(0, limit);
+  return out;
 }
 
 /**
- * @param {{ onPick: (path: string) => void, onCloseMobile?: () => void }} actions
+ * @param {{ path: string, label: string }[]} entries
+ * @param {string} q
+ * @returns {Set<string>} normalized path keys
+ */
+function matchingPathsFromNavLabels(/** @type {{ path: string, label: string }[]} */ entries, /** @type {string} */ q) {
+  const t = String(q)
+    .trim()
+    .toLowerCase();
+  const out = new Set();
+  if (!t) {
+    return out;
+  }
+  const terms = t.split(/\s+/).filter((s) => s.length > 0);
+  if (terms.length === 0) {
+    return out;
+  }
+  for (const e of entries) {
+    const l = (e.label || "").toLowerCase();
+    if (terms.every((term) => l.includes(term))) {
+      out.add(norm(e.path));
+    }
+  }
+  return out;
+}
+
+/**
+ * @param {{ onFilterChange: (paths: Set | null, query: string) => void }} actions
  * @param {string} importMetaUrl
  * @param {{ path: string, label: string }[]} entries
  * @returns {{ root: HTMLElement, getIndex: () => IndexRow[] }}
  */
-export function setupNavSearch(/** @type {{ onPick: (path: string) => void, onCloseMobile?: () => void }} */ actions, /** @type {string} */ importMetaUrl, /** @type {{ path: string, label: string }[]} */ entries) {
-  const { onPick, onCloseMobile } = actions;
+export function setupNavSearch(/** @type {{ onFilterChange: (paths: Set | null, query: string) => void }} */ actions, /** @type {string} */ importMetaUrl, /** @type {{ path: string, label: string }[]} */ entries) {
+  const { onFilterChange } = actions;
 
   const block = document.createElement("div");
   block.className = "yamd-nav-search";
   const label = document.createElement("label");
   label.className = "yamd-nav-search__label";
   label.setAttribute("for", "yamd-nav-search-input");
-  label.textContent = "Search site";
+  label.textContent = "Filter navigation";
 
   const input = document.createElement("input");
   input.className = "yamd-nav-search__input";
@@ -191,8 +203,8 @@ export function setupNavSearch(/** @type {{ onPick: (path: string) => void, onCl
   input.type = "search";
   input.name = "q";
   input.autocomplete = "off";
-  input.placeholder = "Search…";
-  input.setAttribute("aria-label", "Search page titles and content");
+  input.placeholder = "Filter…";
+  input.setAttribute("aria-label", "Filter navigation by page content");
   input.setAttribute("enterkeyhint", "search");
   input.setAttribute("autocapitalize", "off");
   input.setAttribute("spellcheck", "false");
@@ -201,17 +213,9 @@ export function setupNavSearch(/** @type {{ onPick: (path: string) => void, onCl
   status.className = "yamd-nav-search__status";
   status.setAttribute("aria-live", "polite");
 
-  const results = document.createElement("ul");
-  results.className = "yamd-nav-search__results";
-  results.setAttribute("role", "listbox");
-  results.setAttribute("hidden", "");
-  results.id = "yamd-nav-search-results";
-  input.setAttribute("aria-controls", results.id);
-
   block.appendChild(label);
   block.appendChild(input);
   block.appendChild(status);
-  block.appendChild(results);
 
   /** @type {IndexRow[]} */
   let index = [];
@@ -230,7 +234,7 @@ export function setupNavSearch(/** @type {{ onPick: (path: string) => void, onCl
     } else if (index.length) {
       setStatus(`${index.length} pages indexed`);
     } else {
-      setStatus("Focus here to build search index");
+      setStatus("Filter by search");
     }
   }
 
@@ -239,6 +243,7 @@ export function setupNavSearch(/** @type {{ onPick: (path: string) => void, onCl
     indexLoading = true;
     if (input.value.trim()) {
       setStatus("Indexing…");
+      onFilterChange(null, input.value.trim());
     } else {
       idleStatus();
     }
@@ -250,7 +255,7 @@ export function setupNavSearch(/** @type {{ onPick: (path: string) => void, onCl
       index = rows;
       indexLoading = false;
       if (input.value.trim()) {
-        runQuery();
+        applyFilter();
       } else {
         idleStatus();
       }
@@ -260,84 +265,51 @@ export function setupNavSearch(/** @type {{ onPick: (path: string) => void, onCl
       }
       index = entries.map((e) => makeRowFromNavOnly(e));
       indexLoading = false;
-      setStatus("Index failed; nav titles only");
+      setStatus("Index failed; filter by nav title only");
       if (input.value.trim()) {
-        runQuery();
+        applyFilter();
       } else {
         idleStatus();
       }
     }
   }
 
-  function runQuery() {
+  function applyFilter() {
     const q = input.value;
-    if (!q.trim()) {
-      results.textContent = "";
-      results.setAttribute("hidden", "");
+    const qt = q.trim();
+    if (!qt) {
+      onFilterChange(null, "");
       idleStatus();
       return;
     }
     if (indexLoading) {
+      onFilterChange(null, qt);
       setStatus("Indexing…");
       return;
     }
-    if (!index.length) {
-      setStatus("Focus search field to load index");
-      return;
+    if (index.length) {
+      const paths = matchingPathsForQuery(index, q);
+      onFilterChange(paths, qt);
+      setStatus(paths.size ? `Showing ${paths.size} page${paths.size === 1 ? "" : "s"}` : "No matches");
+    } else {
+      const paths = matchingPathsFromNavLabels(entries, q);
+      onFilterChange(paths, qt);
+      setStatus(paths.size ? `Showing ${paths.size} (nav title only, focus to index)` : "No matches");
     }
-    const hits = searchIndex(index, q, 20);
-    results.textContent = "";
-    if (hits.length === 0) {
-      results.setAttribute("hidden", "");
-      setStatus("No matches");
-      return;
-    }
-    results.removeAttribute("hidden");
-    for (const h of hits) {
-      const li = document.createElement("li");
-      li.className = "yamd-nav-search__item";
-      li.setAttribute("role", "option");
-      const b = document.createElement("button");
-      b.type = "button";
-      b.className = "yamd-nav-search__hit";
-      const t0 = document.createElement("span");
-      t0.className = "yamd-nav-search__hit-title";
-      t0.textContent = h.title;
-      const t1 = document.createElement("span");
-      t1.className = "yamd-nav-search__hit-sub";
-      t1.textContent = h.sub;
-      b.appendChild(t0);
-      b.appendChild(t1);
-      b.addEventListener("click", () => {
-        input.value = "";
-        results.textContent = "";
-        results.setAttribute("hidden", "");
-        setStatus(index.length ? `${index.length} pages indexed` : "");
-        onPick(h.path);
-        onCloseMobile?.();
-      });
-      li.appendChild(b);
-      results.appendChild(li);
-    }
-    setStatus(
-      hits.length
-        ? `${hits.length} result${hits.length === 1 ? "" : "s"}`
-        : ""
-    );
   }
 
   input.addEventListener("input", () => {
     clearTimeout(debounce);
     debounce = window.setTimeout(() => {
-      runQuery();
+      applyFilter();
     }, 150);
   });
 
-  input.addEventListener("search", runQuery);
+  input.addEventListener("search", applyFilter);
   input.addEventListener("keydown", (e) => {
     if (e.key === "Escape") {
       input.value = "";
-      runQuery();
+      applyFilter();
     }
   });
 
@@ -345,7 +317,7 @@ export function setupNavSearch(/** @type {{ onPick: (path: string) => void, onCl
     void loadIndexOnFocus();
   });
 
-  setStatus("Focus here to build search index");
+  setStatus("Filter by search");
 
   document.addEventListener("keydown", (e) => {
     if (e.key !== "/") {

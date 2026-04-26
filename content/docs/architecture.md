@@ -30,7 +30,7 @@ flowchart LR
 | `render.js` | Puts `parts` into the article: sections + `render-ui.js` for UI |
 | `render-ui.js` | Declarative YAML form → DOM (inputs, `type: form`, nested `items`) |
 | `site-nav.js` | `pages.yml`, hash ↔ path, left nav, `collectPageEntriesForSearch`; used from `main.js` |
-| `nav-search.js` | Sidebar search UI, index per **focus** (fetches each listed `.md`, strippable body + titles) |
+| `nav-search.js` | Filter field + index on **focus**; passes a `Set` of matching paths to `renderNavTree` to hide non-matching nav items |
 | `main.js` | Fetch `pages.yml` + markdown, routing, nav + search + mobile drawer |
 
 Source: repo [`src/`](https://github.com/eSlider/yamd/tree/main/src) (not served as a directory index on the static site).

@@ -34,6 +34,10 @@ let mobileNav = null;
 let navTreeRoot = null;
 /** @type {ReturnType<typeof setupNavSearch> | null} */
 let navSearch = null;
+/** @type {Set<string> | null} — when non-null, nav shows only these normalized paths and ancestor rows for matching branches */
+let pathFilter = null;
+/** @type {string} — current filter text for <mark> in nav labels; empty = no highlight */
+let pathFilterQuery = "";
 
 /**
  * @param {() => void} fn
@@ -119,13 +123,10 @@ function drawNav(/** @type {string} */ rel) {
     const entries = collectPageEntriesForSearch(nav.items, nav.defaultPath);
     navSearch = setupNavSearch(
       {
-        onPick(/** @type {string} */ p) {
-          const u = getHistoryUrlForContent(p);
-          history.pushState({ p: p }, "", u);
-          void go(p);
-        },
-        onCloseMobile() {
-          mobileNav?.closeIfMobile();
+        onFilterChange(/** @type {Set<string> | null} */ paths, /** @type {string} */ query) {
+          pathFilter = paths;
+          pathFilterQuery = query || "";
+          drawNav(currentLogicalPath());
         },
       },
       import.meta.url,
@@ -136,11 +137,18 @@ function drawNav(/** @type {string} */ rel) {
     navTreeRoot.className = "yamd-nav__tree";
     navHost.appendChild(navTreeRoot);
   }
-  renderNavTree(navTreeRoot, nav.items, rel, (p) => {
-    const u = getHistoryUrlForContent(p);
-    history.pushState({ p: p }, "", u);
-    void go(p);
-  });
+  renderNavTree(
+    navTreeRoot,
+    nav.items,
+    rel,
+    (p) => {
+      const u = getHistoryUrlForContent(p);
+      history.pushState({ p: p }, "", u);
+      void go(p);
+    },
+    pathFilter,
+    pathFilterQuery
+  );
 }
 
 /**
