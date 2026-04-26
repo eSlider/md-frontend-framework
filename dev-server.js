@@ -5,6 +5,8 @@ import { fileURLToPath } from "node:url";
 
 const root = path.dirname(fileURLToPath(import.meta.url));
 const port = Number(process.env.PORT) || 3456;
+/** In Docker, bind 0.0.0.0; local default stays 127.0.0.1. */
+const host = process.env.HOST || "127.0.0.1";
 const mime = {
   ".html": "text/html; charset=utf-8",
   ".js": "application/javascript; charset=utf-8",
@@ -42,6 +44,6 @@ const server = http.createServer(async (req, res) => {
   }
 });
 
-server.listen(port, "127.0.0.1", () => {
-  console.error("http://127.0.0.1:" + port);
+server.listen(port, host, () => {
+  console.error(`http://${host === "0.0.0.0" ? "127.0.0.1" : host}:${port}`);
 });

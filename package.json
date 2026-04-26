@@ -12,7 +12,8 @@
   "bugs": "https://github.com/eSlider/yamd/issues",
   "homepage": "https://eSlider.github.io/yamd/",
   "scripts": {
-    "dev": "node dev-server.js"
+    "dev": "node dev-server.js",
+    "start": "bun run dev-server.js"
   },
   "keywords": [
     "yamd",

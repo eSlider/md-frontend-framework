@@ -1,6 +1,6 @@
 ---
 title: "Get started"
-description: "Clone, local static servers, deploy, edit content and nav."
+description: "Clone, local servers, Docker (GHCR), deploy, edit content and nav."
 ---
 
 # Get started
@@ -43,6 +43,43 @@ Replace `8080` with any free port when the tool accepts a port, then open the ma
 | **Go** | No single stdlib *command*; use one of the rows above or a tiny `FileServer` program, or a static binary like [miniserve](https://github.com/svenstaro/miniserve), [darkhttpd](https://github.com/ryanmjacobs/darkhttpd), [static-web-server](https://github.com/static-web-server/static-web-server). |
 
 *Security:* these are **local dev** patterns. Do not expose an unhardened static server to the public internet.
+
+## Docker (GHCR / Bun)
+
+The app image is **not** on Docker Hub. It is built on **GitHub Actions** and published to the **GitHub Container Registry (GHCR)** for this repository.
+
+| | |
+|--|--|
+| **Build workflow** | [`.github/workflows/docker-publish.yml`](https://github.com/eSlider/yamd/blob/main/.github/workflows/docker-publish.yml) — runs on push to `main`, on version tags `v*`, and [manually](https://github.com/eSlider/yamd/actions/workflows/docker-publish.yml) |
+| **Dockerfile** | [`Dockerfile`](https://github.com/eSlider/yamd/blob/main/Dockerfile) — copies `index.html`, `src/`, `content/`, `pages.yml`, and runs [dev-server.js](https://github.com/eSlider/yamd/blob/main/dev-server.js) with **Bun** |
+| **Upstream image (this repo)** | `ghcr.io/eslider/yamd:latest` — [View package on GitHub](https://github.com/eSlider/yamd/pkgs/container/yamd) (tags like `latest`, `sha-…` appear after a successful run) |
+| **Your fork** | `ghcr.io/<github-username>/yamd:…` under **Packages** on your repo, once Actions has pushed at least once |
+
+`docker pull` for public packages is usually anonymous. If a package is **private** for your org, use a [PAT with `read:packages`](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-container-registry#authenticating-to-the-container-registry) and `docker login ghcr.io`.
+
+### Run with a bind mount (typical: edit your clone’s content)
+
+The container serves port **3456** inside; map a host port (here **8080**):
+
+```bash
+docker run --rm \
+  -p 8080:3456 \
+  -v "$PWD/content:/app/content" \
+  -v "$PWD/pages.yml:/app/pages.yml" \
+  ghcr.io/eslider/yamd:latest
+```
+
+Run it from a directory that has `./content` and `./pages.yml` (for example the repo root after `git clone`). Open **http://127.0.0.1:8080/**.
+
+### Run without mounts
+
+Omit the `-v` flags to use the `content/` and `pages.yml` that were **copied into the image** at build time (useful to preview the default bundle).
+
+### Tuning
+
+- **Inside port:** the server reads `PORT` (default `3456`). With `-e PORT=3000`, map the host: `-p 8080:3000`.
+- **Host binding:** the image sets `HOST=0.0.0.0` so the port publish works. The process log may still show a loopback URL for copy-paste.
+- **Registry docs:** [Working with the Container registry](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-container-registry).
 
 ## Deploy: GitHub Pages (and static hosts in general)
 

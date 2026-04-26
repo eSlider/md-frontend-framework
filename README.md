@@ -6,6 +6,7 @@
   <a href="https://github.com/eSlider/yamd/blob/main/LICENSE"><img src="https://img.shields.io/badge/License-MIT-blue.svg" alt="License: MIT" /></a>
   <a href="https://eSlider.github.io/yamd/"><img src="https://img.shields.io/badge/site-GitHub%20Pages-222?logo=github" alt="Live site" /></a>
   <a href="https://eSlider.github.io/yamd/#docs/index"><img src="https://img.shields.io/badge/manual-in%20app-6366f1" alt="Manual in the app" /></a>
+  <a href="https://github.com/eSlider/yamd/pkgs/container/yamd"><img src="https://img.shields.io/badge/GHCR-ghcr.io%2Feslider%2Fyamd-1f6feb?logo=github" alt="Container image on GitHub" /></a>
   <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guides/Modules"><img src="https://img.shields.io/badge/ES%20modules-browser-f7df1e?logo=javascript&logoColor=000" alt="ES modules" /></a>
 </p>
 
@@ -31,7 +32,32 @@ npm run dev
 
 Open `http://127.0.0.1:3456/` (or the port printed in the terminal). Edit files under `content/`, save, and refresh. Change the sidebar by editing [`pages.yml`](pages.yml).
 
-**More options** (other tools, ports, and GitHub Pages): see [Get started](https://eSlider.github.io/yamd/#docs/get-started) in the in-app manual.
+**More options** (other tools, ports, and GitHub Pages): [Get started](https://eSlider.github.io/yamd/#docs/get-started) in the in-app manual.
+
+### Run from the published container (GHCR)
+
+The image is **built on GitHub** and stored in the **GitHub Container Registry** for this repository — not Docker Hub. After each push to `main`, the workflow [`.github/workflows/docker-publish.yml`](.github/workflows/docker-publish.yml) builds and pushes it.
+
+| What | Value |
+|------|--------|
+| **Registry** | `ghcr.io` ([About GHCR](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-container-registry)) |
+| **Image (upstream repo)** | `ghcr.io/eslider/yamd:latest` — [package page](https://github.com/eSlider/yamd/pkgs/container/yamd) |
+| **Forks** | `ghcr.io/<your-github-username>/yamd:latest` (same path pattern; your fork must run the publish workflow) |
+
+**Quick start** (from a clone of this repo, so `content/` and `pages.yml` exist):
+
+```bash
+docker pull ghcr.io/eslider/yamd:latest
+docker run --rm \
+  -p 8080:3456 \
+  -v "$PWD/content:/app/content" \
+  -v "$PWD/pages.yml:/app/pages.yml" \
+  ghcr.io/eslider/yamd:latest
+```
+
+Open **http://127.0.0.1:8080/** (host `8080` → container `3456`). No `docker pull` is required if the image is already local.
+
+**Details** (Bun, optional mounts, `PORT`, private packages): in-app [Get started — Docker (GHCR / Bun)](https://eSlider.github.io/yamd/#docs/get-started) (section of the same name).
 
 ## Where everything lives
 
