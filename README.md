@@ -20,6 +20,7 @@ Experiment: **one markdown document** = YAML **frontmatter** + body with GitHub-
 - [What it is (and is not)](#what-it-is-and-is-not)
 - [Architecture: the contract](#architecture-the-contract)
 - [Run locally](#run-locally)
+- [Site map: `pages.yml` and routing](#site-map-pagesyml-and-routing)
 - [GitHub Pages: static, no Jekyll, no Action](#github-pages-static-no-jekyll-no-action)
 - [Security note](#security-note)
 - [License](#license)
@@ -85,6 +86,26 @@ npm run dev
 ```
 
 Dependencies are loaded from a CDN via **`importmap`** in `index.html` ([`marked`](https://github.com/markedjs/marked), [`yaml`](https://github.com/eemeli/yaml)). No `npm install` of those for the **browser** path.
+
+---
+
+## Site map: `pages.yml` and routing
+
+A **`pages.yml`** in the [repository root](pages.yml) describes a **nav tree** for the whole static “site”: titles, optional repo-root `path` to a markdown file, and nested **`items`**. The app **fetches** that file; if the response is not OK, the app falls back to **no sidebar** and still serves markdown via `?path=`.
+
+- **`default_path`** (optional) — which markdown file to use when the URL has no `path` query (if omitted, the first `path` in a depth-first walk is used, then `content/example.md` as a last resort).
+- **`path`** on a node must be a path **from the project root** (e.g. `content/specs.md`). Query routing uses **`?path=content%2Fspecs.md`**.
+
+Layout: [`src/main.js`](src/main.js) loads the tree, [`src/site-nav.js`](src/site-nav.js) parses YAML and builds the **nested `<nav>`**; the left column is hidden when `pages.yml` is missing or empty.
+
+### Supported root shapes in YAML
+
+| Shape | Use |
+|-------|-----|
+| A **top-level array** | List of nav groups / links |
+| An object with **`nav`**, **`items`**, or `pages` | Wrap the array and optional `default_path` / `defaultPath` |
+
+The parser lives in `parsePagesYmlText` in `site-nav.js`.
 
 ---
 

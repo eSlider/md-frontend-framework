@@ -21,10 +21,117 @@ body {
   font: 16px/1.5 var(--mdui-font);
 }
 
+.mdui-shell {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  max-width: 64rem;
+  margin: 0 auto;
+  gap: 0;
+  min-height: 100vh;
+}
+
+.mdui-shell__nav {
+  flex: 0 0 12.5rem;
+  min-width: 0;
+  position: sticky;
+  top: 0;
+  max-height: 100vh;
+  overflow: auto;
+  padding: 1.25rem 0.9rem 2rem 1.1rem;
+  border-right: 1px solid var(--mdui-border);
+  background: color-mix(in srgb, var(--mdui-bg) 92%, canvasText 2%);
+}
+
+.mdui-shell__main {
+  flex: 1 1 0;
+  min-width: 0;
+  max-width: 52rem;
+  margin: 0;
+}
+
+.mdui-nav {
+  font-size: 0.9rem;
+}
+
+.mdui-nav__list,
+.mdui-nav__sub {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.mdui-nav__list--root > .mdui-nav__item {
+  margin-bottom: 0.4rem;
+}
+
+.mdui-nav__sub {
+  margin-top: 0.35rem;
+  margin-left: 0.4rem;
+  padding-left: 0.5rem;
+  border-left: 1px solid color-mix(in srgb, var(--mdui-border) 60%, transparent);
+}
+
+.mdui-nav__item {
+  margin: 0.1rem 0 0.25rem;
+}
+
+.mdui-nav__link,
+.mdui-nav__label {
+  display: block;
+  line-height: 1.4;
+  padding: 0.2rem 0.15rem;
+  border-radius: 4px;
+  color: inherit;
+  text-decoration: none;
+}
+
+.mdui-nav__link[aria-current="page"] {
+  font-weight: 600;
+  background: color-mix(in srgb, var(--mdui-border) 30%, transparent);
+}
+
+.mdui-nav__link:hover,
+.mdui-nav__link:focus-visible {
+  background: color-mix(in srgb, var(--mdui-border) 20%, transparent);
+  outline: none;
+}
+
+.mdui-nav__label {
+  color: var(--mdui-muted);
+  font-weight: 600;
+  font-size: 0.9rem;
+  margin-top: 0.2rem;
+}
+
+.mdui-nav__link--branch {
+  font-weight: 500;
+}
+
+@media (max-width: 52rem) {
+  .mdui-shell {
+    flex-direction: column;
+  }
+
+  .mdui-shell__nav {
+    position: static;
+    max-height: none;
+    border-right: none;
+    border-bottom: 1px solid var(--mdui-border);
+    width: 100%;
+  }
+}
+
 .mdui-app {
   max-width: 52rem;
   margin: 0 auto;
   padding: 1.5rem 1rem 2.5rem;
+}
+
+.mdui-shell__main.mdui-app {
+  max-width: none;
+  margin: 0;
+  padding: 1.5rem 1.25rem 2.5rem 1.1rem;
 }
 
 .mdui-loading,

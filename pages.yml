@@ -1,0 +1,15 @@
+# Landing when ?path= is absent: first `path` in the tree, or this key:
+default_path: content/example.md
+
+nav:
+  - title: Home
+    items:
+      - title: Specs
+        path: content/specs.md
+      - title: Idea
+        path: content/idea.md
+  - title: Documentation
+    path: content/index.md
+    items:
+      - title: Get started
+        path: content/start.md

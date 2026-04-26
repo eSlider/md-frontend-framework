@@ -5,7 +5,15 @@ import { fileURLToPath } from "node:url";
 
 const root = path.dirname(fileURLToPath(import.meta.url));
 const port = Number(process.env.PORT) || 3456;
-const mime = { ".html": "text/html; charset=utf-8", ".js": "application/javascript; charset=utf-8", ".css": "text/css; charset=utf-8", ".md": "text/markdown; charset=utf-8", ".json": "application/json" };
+const mime = {
+  ".html": "text/html; charset=utf-8",
+  ".js": "application/javascript; charset=utf-8",
+  ".css": "text/css; charset=utf-8",
+  ".md": "text/markdown; charset=utf-8",
+  ".json": "application/json",
+  ".yml": "text/yaml; charset=utf-8",
+  ".yaml": "text/yaml; charset=utf-8",
+};
 
 const server = http.createServer(async (req, res) => {
   try {
