@@ -1,5 +1,6 @@
 import yaml from "https://esm.sh/yaml@2.8.0?bundle";
 import { parse } from "https://esm.sh/marked@16.0.0";
+import { rewriteRelativeMarkdownLinksInHtml } from "./md-rewrite-links.js";
 
 const FENCE = /^```(\w*)\r?\n([\s\S]*?)\r?\n```/gm;
 const MD = { gfm: true, breaks: false, async: false };
@@ -7,7 +8,12 @@ const MD = { gfm: true, breaks: false, async: false };
 // part: { type:'md', html } | { type:'ui', data: { fields, formAttrs? } }.
 // UI: root may be a form object { type:form, action, method, items:[...] } or legacy form/children.
 // Fields may nest items recursively; normalizeField copies the tree.
-export async function compile(raw) {
+/**
+ * @param {string} raw
+ * @param {{ sourcePath?: string }} [options] — `sourcePath` is app-relative, e.g. `content/docs/index.md`, for `*.md` link rewriting
+ */
+export async function compile(raw, options) {
+  const { sourcePath } = options && typeof options === "object" ? options : {};
   const t = raw.replace(/^\uFEFF/, "");
   const { frontmatter, body } = splitFrontmatter(t);
   const meta = frontmatter == null ? {} : (yaml.parse(frontmatter) ?? {});
@@ -19,7 +25,11 @@ export async function compile(raw) {
       parts.push(s);
       continue;
     }
-    parts.push({ type: "md", html: String(parse(s.md, MD)) });
+    let html = String(parse(s.md, MD));
+    if (sourcePath) {
+      html = rewriteRelativeMarkdownLinksInHtml(html, String(sourcePath));
+    }
+    parts.push({ type: "md", html });
   }
   return { meta, parts };
 }

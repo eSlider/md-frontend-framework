@@ -5,9 +5,9 @@ description: " Served as static text; parsed in the browser."
 
 # Hello
 
-[← yamd manual](#docs/index) · [Cookbook](#cookbook) · [Architecture](#docs/architecture)
+[← yamd manual](#docs/index) · [Examples: Forms](#examples/forms) · [Cookbook](#examples/cookbook) · [Architecture](#docs/architecture)
 
-This page is **`content/example.md`** — also linked as **Demo** in the site nav (`pages.yml`). The **first markdown heading** is the on-page title; the tab title comes from frontmatter `title` above.
+This page is **`content/example.md`** — under **Examples → Live demo** in the nav (`pages.yml`). The **first markdown heading** is the on-page title; the tab title comes from frontmatter `title` above.
 
 This file is `content/example.md`. The block below is a **fenced** ` ```ui ` **segment**; the consumer turns it into native form controls. Styling is **only** in the host app (`app.css` / your theme) — the YAML can use `class` and `variant` for hooks, not inline styles.
 

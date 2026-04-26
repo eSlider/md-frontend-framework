@@ -1,23 +1,8 @@
 ---
-title: "Cookbook"
-description: "Small patterns for pages.yml and forms."
+title: "Cookbook (moved)"
+description: "Examples now live under content/examples/."
 ---
 
 # Cookbook
 
-[← yamd manual](#docs/index) · [Site map](#docs/site-map) · [Demo](#example)
-
-- **Navigation** — tree lives in `pages.yml`; paths are relative to the app base (`content/...`).
-- **Default page** — set `default_path: content/docs/index.md` (or your landing file) in `pages.yml`.
-- **Forms** — use `type: form` with `action` / `method` and nested `items` (see [example](#example)).
-
-## Nested group
-
-```ui
-- type: form
-  title: Group
-  items:
-    - type: input
-      name: x
-      title: Field
-```
+This page moved to **[Cookbook (Examples)](examples/cookbook.md)** under **Examples** in the nav (path `content/examples/cookbook.md`).

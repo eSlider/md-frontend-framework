@@ -21,6 +21,12 @@ body {
   font: 16px/1.5 var(--yamd-font);
 }
 
+body.yamd-nav--lock {
+  overflow: hidden;
+  touch-action: none;
+  overscroll-behavior: none;
+}
+
 .yamd-shell {
   display: flex;
   flex-direction: row;
@@ -108,17 +114,189 @@ body {
   font-weight: 500;
 }
 
+/* —— Mobile: top bar + off-canvas nav + scrim (like a typical in-app menu) —— */
+.yamd-menubar {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 800;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: calc(3.25rem + env(safe-area-inset-top, 0));
+  padding: env(safe-area-inset-top, 0) 0.5rem 0.25rem 0.6rem;
+  border-bottom: 1px solid var(--yamd-border);
+  background: color-mix(in srgb, var(--yamd-bg) 96%, canvasText 1%);
+  backdrop-filter: blur(8px);
+}
+
+.yamd-menubtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  margin: 0;
+  padding: 0.45rem 0.55rem;
+  border: 1px solid var(--yamd-border);
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--yamd-bg) 90%, canvasText 2%);
+  color: inherit;
+  font: inherit;
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.yamd-menubtn:hover,
+.yamd-menubtn:focus-visible {
+  background: color-mix(in srgb, var(--yamd-border) 15%, var(--yamd-bg));
+  outline: none;
+}
+
+.yamd-menubtn__hamburger {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 1.15rem;
+  height: 0.9rem;
+}
+
+.yamd-menubtn__line {
+  display: block;
+  height: 2px;
+  width: 100%;
+  border-radius: 1px;
+  background: currentColor;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+html.yamd-nav--open .yamd-menubtn__hamburger {
+  justify-content: center;
+  gap: 0;
+}
+html.yamd-nav--open .yamd-menubtn__hamburger .yamd-menubtn__line {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  margin-top: -1px;
+  width: 100%;
+}
+html.yamd-nav--open .yamd-menubtn__hamburger .yamd-menubtn__line:nth-child(1) {
+  transform: rotate(45deg);
+}
+html.yamd-nav--open .yamd-menubtn__hamburger .yamd-menubtn__line:nth-child(2) {
+  opacity: 0;
+  transform: scale(0.2);
+}
+html.yamd-nav--open .yamd-menubtn__hamburger .yamd-menubtn__line:nth-child(3) {
+  transform: rotate(-45deg);
+}
+
+.yamd-menubar__title {
+  font-weight: 700;
+  font-size: 1.05rem;
+  letter-spacing: -0.02em;
+  flex: 1;
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.yamd-nav-backdrop {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 600;
+  margin: 0;
+  padding: 0;
+  border: none;
+  background: color-mix(in srgb, #0f172a 55%, transparent);
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+html.yamd-nav--open .yamd-nav-backdrop {
+  display: block;
+  animation: yamd-backdrop-in 0.2s ease-out;
+}
+
+@keyframes yamd-backdrop-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
 @media (max-width: 52rem) {
+  .yamd-menubar:not([hidden]) {
+    display: flex;
+  }
+
+  .yamd-menubar:not([hidden]) ~ .yamd-shell {
+    padding-top: calc(3.25rem + env(safe-area-inset-top, 0));
+  }
+
   .yamd-shell {
     flex-direction: column;
   }
 
   .yamd-shell__nav {
-    position: static;
+    position: fixed;
+    top: calc(3.25rem + env(safe-area-inset-top, 0));
+    left: 0;
+    bottom: 0;
+    z-index: 700;
+    width: min(20rem, 90vw);
+    max-width: 100%;
     max-height: none;
-    border-right: none;
-    border-bottom: 1px solid var(--yamd-border);
-    width: 100%;
+    height: auto;
+    margin: 0;
+    padding: 0.9rem 0.9rem 2rem 1.1rem;
+    padding-left: max(1.1rem, env(safe-area-inset-left, 0));
+    border-right: 1px solid var(--yamd-border);
+    border-bottom: none;
+    background: color-mix(in srgb, var(--yamd-bg) 96%, canvasText 2%);
+    box-shadow: 0 0 0 1px color-mix(in srgb, var(--yamd-border) 50%, transparent), 0 12px 40px color-mix(in srgb, #000 18%, transparent);
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+    transform: translate3d(-105%, 0, 0);
+    transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+    will-change: transform;
+  }
+
+  .yamd-shell__nav[hidden] {
+    display: none;
+  }
+
+  .yamd-shell__nav:not([hidden]) {
+    display: block;
+  }
+
+  html.yamd-nav--open .yamd-shell__nav:not([hidden]) {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@media (max-width: 52rem) and (prefers-reduced-motion: reduce) {
+  .yamd-shell__nav {
+    transition: none;
+  }
+  html.yamd-nav--open .yamd-nav-backdrop {
+    animation: none;
+  }
+}
+
+@media (min-width: 52.01rem) {
+  .yamd-nav-backdrop[hidden] {
+    display: none !important;
   }
 }
 
@@ -156,6 +334,34 @@ body {
   text-decoration-skip-ink: auto;
 }
 
+/* GFM-style tables (GitHub-like: thin 1px grid) */
+.yamd-md table {
+  display: table;
+  width: 100%;
+  max-width: 100%;
+  border-collapse: collapse;
+  border-spacing: 0;
+  margin: 0 0 1.1rem;
+  font-size: 0.95em;
+  box-sizing: border-box;
+}
+.yamd-md th,
+.yamd-md td {
+  border: 1px solid var(--yamd-border);
+  padding: 0.4em 0.8em;
+  line-height: 1.45;
+  vertical-align: top;
+  text-align: start;
+}
+.yamd-md th {
+  font-weight: 600;
+}
+.yamd-md thead th {
+  background: color-mix(in srgb, canvasText 5%, var(--yamd-bg));
+}
+/* .yamd-md tbody tr:nth-child(even) td {
+  background: color-mix(in srgb, canvasText 2%, var(--yamd-bg));
+} */
 .yamd-md pre,
 .yamd-md code {
   font-family: var(--yamd-mono);
@@ -168,6 +374,16 @@ body {
   border-radius: var(--yamd-radius);
   overflow: auto;
   background: color-mix(in srgb, canvas 92%, black 8%);
+}
+
+/* Prism (okaidia) when lazy-enrichers run — overrides plain `pre` background */
+.yamd-md pre.yamd-md__pre--prism {
+  background: #272822;
+  color: #f8f8f2;
+}
+.yamd-md pre.yamd-md__pre--prism > code {
+  color: inherit;
+  background: transparent;
 }
 
 .yamd-ui-block {

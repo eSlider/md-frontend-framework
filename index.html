@@ -1,8 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <!-- See content/start.md for a minimal shell example and lazy Mermaid/Prism notes. -->
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta property="og:title" content="yamd — yet another markdown (YAML + Markdown)" />
     <meta
       name="description"
       content="yamd — yet another markdown (YAML + Markdown): humanized documentation with zero backend for projects with .md files."
@@ -17,6 +19,30 @@
     <script type="module" src="./src/main.js"></script>
   </head>
   <body>
+    <header class="yamd-menubar" id="yamd-menubar" hidden>
+      <button
+        type="button"
+        class="yamd-menubtn"
+        id="yamd-menubtn"
+        aria-expanded="false"
+        aria-controls="yamd-nav-wrap"
+        aria-label="Open table of contents"
+      >
+        <span class="yamd-menubtn__hamburger" aria-hidden="true">
+          <span class="yamd-menubtn__line"></span>
+          <span class="yamd-menubtn__line"></span>
+          <span class="yamd-menubtn__line"></span>
+        </span>
+        <span class="yamd-menubtn__label">Menu</span>
+      </button>
+      <span class="yamd-menubar__title">yamd</span>
+    </header>
+    <div
+      class="yamd-nav-backdrop"
+      id="yamd-nav-backdrop"
+      hidden
+      aria-hidden="true"
+    ></div>
     <div class="yamd-shell">
       <aside id="yamd-nav-wrap" class="yamd-shell__nav" hidden aria-label="Table of contents"></aside>
       <div id="yamd-content" class="yamd-app yamd-shell__main" role="main">

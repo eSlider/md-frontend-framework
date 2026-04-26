@@ -1,5 +1,5 @@
 # Landing when no hash: this key, or first `path` in the tree.
-# Deep links: `#<path>` is relative to the content/ folder, e.g. #cookbook → content/cookbook.md
+# Deep links: path under `content/`, e.g. #examples/cookbook → content/examples/cookbook.md
 default_path: content/docs/index.md
 
 nav:
@@ -16,16 +16,19 @@ nav:
         path: content/docs/site-map.md
       - title: Get started
         path: content/docs/get-started.md
-  - title: Demo
-    path: content/example.md
+
   - title: Examples
     items:
+      - title: "Live demo"
+        path: content/example.md
+      - title: Forms
+        path: content/examples/forms.md
       - title: Cookbook
-        path: content/cookbook.md
+        path: content/examples/cookbook.md
       - title: Form patterns
-        path: content/patterns.md
+        path: content/examples/patterns.md
       - title: Research
-        path: content/research.md
+        path: content/examples/research.md
   - title: Reference
     items:
       - title: Specs

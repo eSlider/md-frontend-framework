@@ -14,13 +14,13 @@ description: "Yet another markdown: humanized in-app manual (content/ + pages.ym
 | [Philosophy](#docs/philosophy) | Why a **string → compile → render** contract, and what we avoid |
 | [Features](#docs/features) | **Zero backend**, **zero build**, **declarative-first**, **zero [author] code** (explained precisely) |
 | [Architecture](#docs/architecture) | `compile` / `render` flow, module roles |
-| [Site map & routing](#docs/site-map) | `pages.yml`, deep links (path under `content/`, e.g. `#cookbook`), `default_path` |
+| [Site map & routing](#docs/site-map) | `pages.yml`, deep links (e.g. `#examples/cookbook`), `default_path` |
 | [Get started](#docs/get-started) | Local run, first edits, where the engine lives |
 
 ## Examples (outside this section)
 
 - [Live demo (forms)](#example) — ` ```ui` blocks in one file
-- [Cookbook](#cookbook) · [Form patterns](#patterns) · [Research](#research)
+- [Forms](#examples/forms) · [Cookbook](#examples/cookbook) · [Form patterns](#examples/patterns) · [Research](#examples/research)
 - [Specs](#specs) · [Idea (contract)](#idea)
 
 The [repository README](https://github.com/eSlider/yamd#readme) stays for **badges, clone, license, and CI**; philosophy and “how it works” live **here** so you can link between pages like a normal static manual.

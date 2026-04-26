@@ -20,8 +20,9 @@ description: "pages.yml, #... deep links, default_path."
 |--------------------|------------------------------------|
 | `#docs/philosophy` | `content/docs/philosophy.md` |
 | `#example` | `content/example.md` |
+| `#examples/cookbook` | `content/examples/cookbook.md` |
 
-- Internal Markdown links: `[text](#cookbook)` (same as the nav; hash-only, works on [GitHub Pages under a subpath](https://eSlider.github.io/yamd/) without domain-root `/?…`).
+- Internal Markdown links: `[text](#examples/cookbook)` (same as the nav; hash-only, works on [GitHub Pages under a subpath](https://eSlider.github.io/yamd/) without domain-root `/?…`).
 - **Legacy** `?path=content%2F…` is **one-off** rewritten to the hash (see `main.js`).
 
 ## `default_path`

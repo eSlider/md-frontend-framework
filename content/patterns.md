@@ -1,18 +1,8 @@
 ---
-title: "Form patterns"
-description: "Field types in ui blocks."
+title: "Form patterns (moved)"
+description: "Examples now live under content/examples/."
 ---
 
 # Form patterns
 
-[← yamd manual](#docs/index) · [Features](#docs/features) · [Live demo](#example)
-
-| YAML `type` | Renders as |
-|-------------|------------|
-| `input` + `variant: email` | `input` |
-| `textArea` | `textarea` |
-| `select` + `options` | `select` / `option` |
-| `checkbox` / `radio` | native controls |
-| `submit` / `button` | `button` |
-
-Styling: use `class` and `variant` in YAML; **no** author-controlled inline `style` in content.
+This page moved to **[Form patterns](#examples/patterns)** under **Examples** in the nav (path `content/examples/patterns.md`).

@@ -1,6 +1,7 @@
 import { compile } from "./document.js";
 import { render } from "./render.js";
 import { runLazyEnrichers } from "./lazy-enrichers.js";
+import { setupMobileNav } from "./mobile-nav.js";
 import {
   coalescePath,
   contentPathToHash,
@@ -15,17 +16,37 @@ import {
 } from "./site-nav.js";
 
 const PAGES = new URL("../pages.yml", import.meta.url);
-const el = document.getElementById("yamd-content");
-const navHost = document.getElementById("yamd-nav-wrap");
 
-if (!el) {
-  throw new Error("#yamd-content");
-}
+/** @type {HTMLElement | null} */
+let el = null;
+/** @type {HTMLElement | null} */
+let navHost = null;
 
 const FALLBACK_MD = "content/docs/index.md";
 
 const nav = { defaultPath: null, items: [] };
 let hasNav = false;
+/** @type {ReturnType<typeof setupMobileNav>} */
+let mobileNav = null;
+
+/**
+ * @param {() => void} fn
+ */
+function whenDocumentReady(fn) {
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", fn, { once: true });
+  } else {
+    fn();
+  }
+}
+
+function initRoots() {
+  el = document.getElementById("yamd-content");
+  navHost = document.getElementById("yamd-nav-wrap");
+  if (!el) {
+    throw new Error("#yamd-content");
+  }
+}
 
 function migrateLegacyPathQuery() {
   if (typeof location === "undefined") {
@@ -63,6 +84,14 @@ async function loadTree() {
       navHost.setAttribute("hidden", "");
     }
   }
+  const menubar = document.getElementById("yamd-menubar");
+  if (menubar) {
+    if (hasNav) {
+      menubar.removeAttribute("hidden");
+    } else {
+      menubar.setAttribute("hidden", "");
+    }
+  }
 }
 
 function currentLogicalPath() {
@@ -91,6 +120,12 @@ function drawNav(/** @type {string} */ rel) {
  * @param {string|undefined} explicitPath
  */
 async function go(/** @type {string|undefined} */ explicitPath) {
+  if (!el) {
+    return;
+  }
+  if (mobileNav) {
+    mobileNav.closeIfMobile();
+  }
   const rel =
     explicitPath != null
       ? hasNav
@@ -104,7 +139,7 @@ async function go(/** @type {string|undefined} */ explicitPath) {
     if (!res.ok) {
       throw new Error("Fetch " + rel + " → " + res.status);
     }
-    const doc = await compile(await res.text());
+    const doc = await compile(await res.text(), { sourcePath: rel });
     el.replaceChildren();
     render(el, doc);
     await runLazyEnrichers(el);
@@ -117,24 +152,35 @@ async function go(/** @type {string|undefined} */ explicitPath) {
   drawNav(rel);
 }
 
-window.addEventListener("popstate", () => {
-  go();
-});
+whenDocumentReady(() => {
+  initRoots();
+  mobileNav = setupMobileNav({
+    menubtn: document.getElementById("yamd-menubtn"),
+    backdrop: document.getElementById("yamd-nav-backdrop"),
+  });
 
-window.addEventListener("hashchange", () => {
-  go();
-});
+  window.addEventListener("popstate", () => {
+    void go();
+  });
 
-void (async () => {
-  try {
-    migrateLegacyPathQuery();
-    rewriteLegacyContentHash();
-    await loadTree();
-    await go();
-  } catch (e) {
-    const p = document.createElement("p");
-    p.className = "yamd-error";
-    p.textContent = "Error: " + (e instanceof Error ? e.message : String(e));
-    el.replaceChildren(p);
-  }
-})();
+  window.addEventListener("hashchange", () => {
+    void go();
+  });
+
+  void (async () => {
+    try {
+      migrateLegacyPathQuery();
+      rewriteLegacyContentHash();
+      await loadTree();
+      await go();
+    } catch (e) {
+      if (!el) {
+        return;
+      }
+      const p = document.createElement("p");
+      p.className = "yamd-error";
+      p.textContent = "Error: " + (e instanceof Error ? e.message : String(e));
+      el.replaceChildren(p);
+    }
+  })();
+});
