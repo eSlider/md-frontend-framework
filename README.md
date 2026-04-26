@@ -96,7 +96,7 @@ This project is a **static site** (HTML, CSS, JS) served **as files**. There is 
 2. **Settings** → **Pages** → **Build and deployment** → **Deploy from a branch** → `main` → **/ (root)**.  
 3. The site URL is: **`https://<user>.github.io/<repo>/`**  
    - This repo: **[`https://eSlider.github.io/md-frontend-framework/`](https://eSlider.github.io/md-frontend-framework/)**  
-4. `fetch` uses relative URLs from `import.meta.url`; they work under the `/<repo>/` base path the same as locally.
+4. `fetch` uses relative URLs from `import.meta.url`; they work under the `/<repo>/` base path the same as locally. The first time you open the Pages URL, GitHub may return **404** for a short period while the static export updates; try again in one or two minutes.
 
 *Optional:* add a [custom domain](https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site) in **Settings** → **Pages** if you use your own host.
 
