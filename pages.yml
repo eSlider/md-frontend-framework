@@ -2,7 +2,17 @@
 default_path: content/example.md
 
 nav:
-  - title: Home
+  - title: Demo
+    path: content/example.md
+  - title: Examples
+    items:
+      - title: Cookbook
+        path: content/cookbook.md
+      - title: Form patterns
+        path: content/patterns.md
+      - title: Research
+        path: content/research.md
+  - title: Reference
     items:
       - title: Specs
         path: content/specs.md

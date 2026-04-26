@@ -12,10 +12,18 @@ export function render(root, { meta, parts }) {
 
   const a = document.createElement("article");
   a.className = "mdui-article";
-  const h1 = document.createElement("h1");
-  h1.className = "mdui-article__title";
-  h1.textContent = String(meta.title || TITLE);
-  a.appendChild(h1);
+  const first = parts[0];
+  const h1InFirstMd =
+    first &&
+    first.type === "md" &&
+    typeof first.html === "string" &&
+    /^\s*<h1\b/i.test(first.html);
+  if (!h1InFirstMd) {
+    const h1 = document.createElement("h1");
+    h1.className = "mdui-article__title";
+    h1.textContent = String(meta.title || TITLE);
+    a.appendChild(h1);
+  }
 
   for (const p of parts) {
     if (p.type === "md") {
