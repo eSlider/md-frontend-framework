@@ -11,20 +11,12 @@
     <link rel="stylesheet" href="./src/app.css" />
   </head>
   <body>
-    <div class="mdui-shell">
-      <aside id="mdui-nav-wrap" class="mdui-shell__nav" hidden aria-label="Table of contents"></aside>
-      <div id="mdui-content" class="mdui-app mdui-shell__main" role="main">
-        <p class="mdui-loading">Loading…</p>
+    <div class="yamd-shell">
+      <aside id="yamd-nav-wrap" class="yamd-shell__nav" hidden aria-label="Table of contents"></aside>
+      <div id="yamd-content" class="yamd-app yamd-shell__main" role="main">
+        <p class="yamd-loading">Loading…</p>
       </div>
     </div>
-    <script type="importmap">
-      {
-        "imports": {
-          "marked": "https://esm.sh/marked@16.0.0",
-          "yaml": "https://esm.sh/yaml@2.8.0?bundle"
-        }
-      }
-    </script>
     <script type="module" src="./src/main.js"></script>
   </body>
 </html>

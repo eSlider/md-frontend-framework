@@ -1,5 +1,6 @@
 import { compile } from "./document.js";
 import { render } from "./render.js";
+import { runLazyEnrichers } from "./lazy-enrichers.js";
 import {
   coalescePath,
   contentPathToHash,
@@ -14,11 +15,11 @@ import {
 } from "./site-nav.js";
 
 const PAGES = new URL("../pages.yml", import.meta.url);
-const el = document.getElementById("mdui-content");
-const navHost = document.getElementById("mdui-nav-wrap");
+const el = document.getElementById("yamd-content");
+const navHost = document.getElementById("yamd-nav-wrap");
 
 if (!el) {
-  throw new Error("#mdui-content");
+  throw new Error("#yamd-content");
 }
 
 const FALLBACK_MD = "content/docs/index.md";
@@ -106,9 +107,10 @@ async function go(/** @type {string|undefined} */ explicitPath) {
     const doc = await compile(await res.text());
     el.replaceChildren();
     render(el, doc);
+    await runLazyEnrichers(el);
   } catch (e) {
     const p = document.createElement("p");
-    p.className = "mdui-error";
+    p.className = "yamd-error";
     p.textContent = "Error: " + (e instanceof Error ? e.message : String(e));
     el.replaceChildren(p);
   }
@@ -131,7 +133,7 @@ void (async () => {
     await go();
   } catch (e) {
     const p = document.createElement("p");
-    p.className = "mdui-error";
+    p.className = "yamd-error";
     p.textContent = "Error: " + (e instanceof Error ? e.message : String(e));
     el.replaceChildren(p);
   }

@@ -228,10 +228,10 @@ function searchWithoutLegacyPath() {
 export function renderNavTree(el, items, currentPath, onNavigate) {
   el.textContent = "";
   const nav = document.createElement("nav");
-  nav.className = "mdui-nav";
+  nav.className = "yamd-nav";
   nav.setAttribute("aria-label", "Site");
   const ul = document.createElement("ul");
-  ul.className = "mdui-nav__list mdui-nav__list--root";
+  ul.className = "yamd-nav__list yamd-nav__list--root";
   const cNorm = norm(currentPath);
   for (const n of items) {
     const li = renderNavItem(n, cNorm, onNavigate);
@@ -250,10 +250,10 @@ export function renderNavTree(el, items, currentPath, onNavigate) {
  */
 function renderNavItem(n, cNorm, onNavigate) {
   const li = document.createElement("li");
-  li.className = "mdui-nav__item";
+  li.className = "yamd-nav__item";
   if (n.path) {
     const a = document.createElement("a");
-    a.className = "mdui-nav__link" + (n.items && n.items.length ? " mdui-nav__link--branch" : "");
+    a.className = "yamd-nav__link" + (n.items && n.items.length ? " yamd-nav__link--branch" : "");
     a.textContent = n.title;
     a.href = pathToHref(n.path);
     a.dataset.path = n.path;
@@ -270,13 +270,13 @@ function renderNavItem(n, cNorm, onNavigate) {
     li.appendChild(a);
   } else {
     const t = document.createElement("span");
-    t.className = "mdui-nav__label";
+    t.className = "yamd-nav__label";
     t.textContent = n.title;
     li.appendChild(t);
   }
   if (n.items && n.items.length) {
     const sub = document.createElement("ul");
-    sub.className = "mdui-nav__sub";
+    sub.className = "yamd-nav__sub";
     for (const c of n.items) {
       const ch = renderNavItem(c, cNorm, onNavigate);
       if (ch) {

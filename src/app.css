@@ -1,12 +1,12 @@
 :root {
   color-scheme: light dark;
-  --mdui-bg: canvas;
-  --mdui-fg: canvasText;
-  --mdui-muted: #666;
-  --mdui-border: color-mix(in srgb, canvasText 18%, transparent);
-  --mdui-radius: 10px;
-  --mdui-font: system-ui, "Segoe UI", Roboto, Ubuntu, "Helvetica Neue", sans-serif;
-  --mdui-mono: ui-monospace, "Cascadia Code", "Fira Code", Consolas, monospace;
+  --yamd-bg: canvas;
+  --yamd-fg: canvasText;
+  --yamd-muted: #666;
+  --yamd-border: color-mix(in srgb, canvasText 18%, transparent);
+  --yamd-radius: 10px;
+  --yamd-font: system-ui, "Segoe UI", Roboto, Ubuntu, "Helvetica Neue", sans-serif;
+  --yamd-mono: ui-monospace, "Cascadia Code", "Fira Code", Consolas, monospace;
 }
 
 * {
@@ -16,12 +16,12 @@
 body {
   margin: 0;
   min-height: 100vh;
-  background: var(--mdui-bg);
-  color: var(--mdui-fg);
-  font: 16px/1.5 var(--mdui-font);
+  background: var(--yamd-bg);
+  color: var(--yamd-fg);
+  font: 16px/1.5 var(--yamd-font);
 }
 
-.mdui-shell {
+.yamd-shell {
   display: flex;
   flex-direction: row;
   align-items: flex-start;
@@ -31,7 +31,7 @@ body {
   min-height: 100vh;
 }
 
-.mdui-shell__nav {
+.yamd-shell__nav {
   flex: 0 0 12.5rem;
   min-width: 0;
   position: sticky;
@@ -39,45 +39,45 @@ body {
   max-height: 100vh;
   overflow: auto;
   padding: 1.25rem 0.9rem 2rem 1.1rem;
-  border-right: 1px solid var(--mdui-border);
-  background: color-mix(in srgb, var(--mdui-bg) 92%, canvasText 2%);
+  border-right: 1px solid var(--yamd-border);
+  background: color-mix(in srgb, var(--yamd-bg) 92%, canvasText 2%);
 }
 
-.mdui-shell__main {
+.yamd-shell__main {
   flex: 1 1 0;
   min-width: 0;
   max-width: 52rem;
   margin: 0;
 }
 
-.mdui-nav {
+.yamd-nav {
   font-size: 0.9rem;
 }
 
-.mdui-nav__list,
-.mdui-nav__sub {
+.yamd-nav__list,
+.yamd-nav__sub {
   list-style: none;
   margin: 0;
   padding: 0;
 }
 
-.mdui-nav__list--root > .mdui-nav__item {
+.yamd-nav__list--root > .yamd-nav__item {
   margin-bottom: 0.4rem;
 }
 
-.mdui-nav__sub {
+.yamd-nav__sub {
   margin-top: 0.35rem;
   margin-left: 0.4rem;
   padding-left: 0.5rem;
-  border-left: 1px solid color-mix(in srgb, var(--mdui-border) 60%, transparent);
+  border-left: 1px solid color-mix(in srgb, var(--yamd-border) 60%, transparent);
 }
 
-.mdui-nav__item {
+.yamd-nav__item {
   margin: 0.1rem 0 0.25rem;
 }
 
-.mdui-nav__link,
-.mdui-nav__label {
+.yamd-nav__link,
+.yamd-nav__label {
   display: block;
   line-height: 1.4;
   padding: 0.2rem 0.15rem;
@@ -86,60 +86,60 @@ body {
   text-decoration: none;
 }
 
-.mdui-nav__link[aria-current="page"] {
+.yamd-nav__link[aria-current="page"] {
   font-weight: 600;
-  background: color-mix(in srgb, var(--mdui-border) 30%, transparent);
+  background: color-mix(in srgb, var(--yamd-border) 30%, transparent);
 }
 
-.mdui-nav__link:hover,
-.mdui-nav__link:focus-visible {
-  background: color-mix(in srgb, var(--mdui-border) 20%, transparent);
+.yamd-nav__link:hover,
+.yamd-nav__link:focus-visible {
+  background: color-mix(in srgb, var(--yamd-border) 20%, transparent);
   outline: none;
 }
 
-.mdui-nav__label {
-  color: var(--mdui-muted);
+.yamd-nav__label {
+  color: var(--yamd-muted);
   font-weight: 600;
   font-size: 0.9rem;
   margin-top: 0.2rem;
 }
 
-.mdui-nav__link--branch {
+.yamd-nav__link--branch {
   font-weight: 500;
 }
 
 @media (max-width: 52rem) {
-  .mdui-shell {
+  .yamd-shell {
     flex-direction: column;
   }
 
-  .mdui-shell__nav {
+  .yamd-shell__nav {
     position: static;
     max-height: none;
     border-right: none;
-    border-bottom: 1px solid var(--mdui-border);
+    border-bottom: 1px solid var(--yamd-border);
     width: 100%;
   }
 }
 
-.mdui-app {
+.yamd-app {
   max-width: 52rem;
   margin: 0 auto;
   padding: 1.5rem 1rem 2.5rem;
 }
 
-.mdui-shell__main.mdui-app {
+.yamd-shell__main.yamd-app {
   max-width: none;
   margin: 0;
   padding: 1.5rem 1.25rem 2.5rem 1.1rem;
 }
 
-.mdui-loading,
-.mdui-error {
-  color: var(--mdui-muted);
+.yamd-loading,
+.yamd-error {
+  color: var(--yamd-muted);
 }
 
-.mdui-article__title {
+.yamd-article__title {
   font-size: clamp(1.5rem, 3vw, 2rem);
   line-height: 1.2;
   margin: 0 0 1rem;
@@ -147,102 +147,102 @@ body {
   letter-spacing: -0.02em;
 }
 
-.mdui-md {
+.yamd-md {
   margin: 0 0 1.25rem;
 }
 
-.mdui-md a {
+.yamd-md a {
   color: inherit;
   text-decoration-skip-ink: auto;
 }
 
-.mdui-md pre,
-.mdui-md code {
-  font-family: var(--mdui-mono);
+.yamd-md pre,
+.yamd-md code {
+  font-family: var(--yamd-mono);
   font-size: 0.9em;
 }
 
-.mdui-md pre {
+.yamd-md pre {
   padding: 0.85rem 1rem;
-  border: 1px solid var(--mdui-border);
-  border-radius: var(--mdui-radius);
+  border: 1px solid var(--yamd-border);
+  border-radius: var(--yamd-radius);
   overflow: auto;
   background: color-mix(in srgb, canvas 92%, black 8%);
 }
 
-.mdui-ui-block {
+.yamd-ui-block {
   margin: 1.5rem 0;
 }
 
-.mdui-ui {
-  border: 1px solid var(--mdui-border);
-  border-radius: var(--mdui-radius);
+.yamd-ui {
+  border: 1px solid var(--yamd-border);
+  border-radius: var(--yamd-radius);
   padding: 1rem 1.1rem 1.15rem;
   background: color-mix(in srgb, canvas 88%, white 0%);
 }
 
-.mdui-form-nested {
-  border: 1px dashed var(--mdui-border);
+.yamd-form-nested {
+  border: 1px dashed var(--yamd-border);
   border-radius: 8px;
   margin: 0.2rem 0 0.5rem;
   min-width: 0;
   padding: 0.4rem 0.65rem 0.5rem;
 }
 
-.mdui-form-nested__legend {
+.yamd-form-nested__legend {
   font-size: 0.9rem;
   font-weight: 600;
   padding: 0 0.1rem;
 }
 
-.mdui-ui__stack {
+.yamd-ui__stack {
   display: flex;
   flex-direction: column;
   gap: 0.85rem;
 }
 
-.mdui-control__label {
+.yamd-control__label {
   display: block;
   font-weight: 600;
   margin-bottom: 0.3rem;
 }
 
-.mdui-control input,
-.mdui-control textarea,
-.mdui-control select {
+.yamd-control input,
+.yamd-control textarea,
+.yamd-control select {
   width: 100%;
   max-width: 28rem;
   font: inherit;
   padding: 0.4rem 0.55rem;
-  border: 1px solid var(--mdui-border);
+  border: 1px solid var(--yamd-border);
   border-radius: 8px;
   background: canvas;
   color: inherit;
 }
 
-.mdui-control textarea {
+.yamd-control textarea {
   min-height: 5rem;
   resize: vertical;
 }
 
-.mdui-control--checkbox .mdui-control__inline,
-.mdui-control--radio .mdui-control__inline {
+.yamd-control--checkbox .yamd-control__inline,
+.yamd-control--radio .yamd-control__inline {
   display: inline-flex;
   align-items: center;
   gap: 0.45rem;
   max-width: none;
 }
 
-.mdui-control--checkbox .mdui-control__label,
-.mdui-control--radio .mdui-control__label {
+.yamd-control--checkbox .yamd-control__label,
+.yamd-control--radio .yamd-control__label {
   display: none;
 }
 
-.mdui-btn {
+.yamd-btn {
   display: inline-flex;
   align-items: center;
   padding: 0.45rem 0.95rem;
-  border: 1px solid var(--mdui-border);
+  border: 1px solid var(--yamd-border);
   border-radius: 999px;
   background: color-mix(in srgb, canvas 88%, currentColor 3%);
   font: inherit;
@@ -250,24 +250,51 @@ body {
   cursor: pointer;
 }
 
-.mdui-btn:hover {
+.yamd-btn:hover {
   filter: brightness(1.05);
 }
 
-.mdui-fieldset {
-  border: 1px solid var(--mdui-border);
-  border-radius: var(--mdui-radius);
+.yamd-fieldset {
+  border: 1px solid var(--yamd-border);
+  border-radius: var(--yamd-radius);
   margin: 0;
   padding: 0.75rem 0.9rem 0.9rem;
 }
 
-.mdui-fieldset__legend {
+.yamd-fieldset__legend {
   padding: 0 0.2rem;
   font-weight: 600;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .mdui-btn:hover {
+  .yamd-btn:hover {
     filter: none;
+  }
+}
+
+/* Mermaid output (replaces `pre>code.language-mermaid` after lazy render) */
+.yamd-mermaid {
+  margin: 0.5rem 0 1.25rem;
+  padding: 0.75rem 0.9rem;
+  max-width: 100%;
+  overflow: auto;
+  border: 1px solid var(--yamd-border);
+  border-radius: var(--yamd-radius);
+  background: color-mix(in srgb, canvas 90%, black 4%);
+}
+.yamd-mermaid svg {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+.yamd-mermaid--error {
+  font-size: 0.85em;
+  font-family: var(--yamd-mono);
+  color: #c00;
+  white-space: pre-wrap;
+}
+@media (prefers-color-scheme: light) {
+  .yamd-mermaid--error {
+    color: #a00;
   }
 }

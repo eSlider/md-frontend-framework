@@ -7,11 +7,11 @@ export function render(root, { meta, parts }) {
   const meth = typeof meta.form_method === "string" ? meta.form_method : undefined;
 
   if (meta.title) {
-    document.title = String(meta.title) + " · mdui";
+    document.title = String(meta.title) + " · yamd";
   }
 
   const a = document.createElement("article");
-  a.className = "mdui-article";
+  a.className = "yamd-article";
   const first = parts[0];
   const h1InFirstMd =
     first &&
@@ -20,7 +20,7 @@ export function render(root, { meta, parts }) {
     /^\s*<h1\b/i.test(first.html);
   if (!h1InFirstMd) {
     const h1 = document.createElement("h1");
-    h1.className = "mdui-article__title";
+    h1.className = "yamd-article__title";
     h1.textContent = String(meta.title || TITLE);
     a.appendChild(h1);
   }
@@ -28,12 +28,12 @@ export function render(root, { meta, parts }) {
   for (const p of parts) {
     if (p.type === "md") {
       const s = document.createElement("section");
-      s.className = "mdui-md";
+      s.className = "yamd-md";
       s.innerHTML = p.html;
       a.appendChild(s);
     } else {
       const s = document.createElement("section");
-      s.className = "mdui-ui-block";
+      s.className = "yamd-ui-block";
       s.appendChild(
         renderUiModel(p.data, { action: act, method: meth })
       );

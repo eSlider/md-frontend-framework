@@ -2,7 +2,7 @@ export function renderUiModel(model, options) {
   const { fields, formAttrs } = model;
   if (!Array.isArray(fields) || fields.length === 0) {
     const empty = document.createElement("div");
-    empty.className = "mdui-ui mdui-ui--empty";
+    empty.className = "yamd-ui yamd-ui--empty";
     empty.textContent = "Empty UI block";
     return empty;
   }
@@ -12,7 +12,7 @@ export function renderUiModel(model, options) {
     ? document.createElement("form")
     : document.createElement("div");
   const fa = formAttrs && typeof formAttrs === "object" ? formAttrs : {};
-  const base = "mdui-ui" + (useForm ? " mdui-ui--form" : " mdui-ui--panel");
+  const base = "yamd-ui" + (useForm ? " yamd-ui--form" : " yamd-ui--panel");
   const extra = typeof fa.class === "string" && fa.class.trim() ? " " + fa.class.trim() : "";
   el.className = base + extra;
 
@@ -45,7 +45,7 @@ export function renderUiModel(model, options) {
   }
 
   const stack = document.createElement("div");
-  stack.className = "mdui-ui__stack";
+  stack.className = "yamd-ui__stack";
   for (const field of fields) {
     stack.appendChild(renderField(field, useForm));
   }
@@ -105,7 +105,7 @@ function renderField(field, inForm) {
 
   if (!isLeafType(field.type) && field.type === "form" && kids) {
     const fs = document.createElement("fieldset");
-    fs.className = fieldClass(field, "mdui-form-nested");
+    fs.className = fieldClass(field, "yamd-form-nested");
     if (field.id) {
       fs.id = String(field.id);
     }
@@ -120,7 +120,7 @@ function renderField(field, inForm) {
     }
     if (field.title) {
       const leg = document.createElement("legend");
-      leg.className = "mdui-form-nested__legend";
+      leg.className = "yamd-form-nested__legend";
       leg.textContent = String(field.title);
       fs.appendChild(leg);
     }
@@ -132,7 +132,7 @@ function renderField(field, inForm) {
 
   if (field.type === "children" && kids) {
     const group = document.createElement("div");
-    group.className = fieldClass(field, "mdui-group");
+    group.className = fieldClass(field, "yamd-group");
     for (const c of kids) {
       group.appendChild(renderField(c, inForm));
     }
@@ -141,10 +141,10 @@ function renderField(field, inForm) {
 
   if (kids && field.type !== "form" && field.type !== "children" && !isLeafType(field.type)) {
     const group = document.createElement("fieldset");
-    group.className = fieldClass(field, "mdui-fieldset");
+    group.className = fieldClass(field, "yamd-fieldset");
     if (field.title) {
       const cap = document.createElement("legend");
-      cap.className = "mdui-fieldset__legend";
+      cap.className = "yamd-fieldset__legend";
       cap.textContent = String(field.title);
       group.appendChild(cap);
     }
@@ -171,10 +171,10 @@ function renderField(field, inForm) {
     case "submit":
     case "button": {
       const row = document.createElement("div");
-      row.className = "mdui-control mdui-control--button";
+      row.className = "yamd-control yamd-control--button";
       const b = document.createElement("button");
       b.type = field.type === "button" ? "button" : "submit";
-      b.className = fieldClass(field, "mdui-btn");
+      b.className = fieldClass(field, "yamd-btn");
       b.textContent = String(field.label || field.title || "Submit");
       if (field.name) {
         b.name = field.name;
@@ -187,7 +187,7 @@ function renderField(field, inForm) {
     }
     default: {
       const p = document.createElement("p");
-      p.className = "mdui-unknown";
+      p.className = "yamd-unknown";
       p.textContent = `Unknown UI type: ${String(field.type)}`;
       return p;
     }
@@ -201,15 +201,15 @@ function fieldClass(field, base) {
 
 function buildControl(field, kind, inForm) {
   const row = document.createElement("div");
-  row.className = fieldClass(field, "mdui-control mdui-control--" + kind);
+  row.className = fieldClass(field, "yamd-control yamd-control--" + kind);
   if (field.variant) {
     row.setAttribute("data-variant", String(field.variant));
   }
 
-  const id = field.id || (field.name ? "mdui-" + field.name : "");
+  const id = field.id || (field.name ? "yamd-" + field.name : "");
   if (field.title && (kind === "input" || kind === "textarea" || kind === "select")) {
     const lab = document.createElement("label");
-    lab.className = "mdui-control__label";
+    lab.className = "yamd-control__label";
     if (id) {
       lab.setAttribute("for", id);
     }
@@ -257,7 +257,7 @@ function buildControl(field, kind, inForm) {
     row.appendChild(ta);
   } else if (kind === "checkbox") {
     const wrap = document.createElement("label");
-    wrap.className = "mdui-control__inline";
+    wrap.className = "yamd-control__inline";
     const input = document.createElement("input");
     input.type = "checkbox";
     if (id) {
@@ -266,7 +266,7 @@ function buildControl(field, kind, inForm) {
     if (field.name) {
       input.name = field.name;
     }
-    input.className = "mdui-checkbox";
+    input.className = "yamd-checkbox";
     if (field.value) {
       input.value = String(field.value);
     }
@@ -274,14 +274,14 @@ function buildControl(field, kind, inForm) {
     wrap.appendChild(input);
     if (field.title) {
       const t = document.createElement("span");
-      t.className = "mdui-control__title";
+      t.className = "yamd-control__title";
       t.textContent = String(field.title);
       wrap.appendChild(t);
     }
     row.appendChild(wrap);
   } else if (kind === "radio") {
     const wrap = document.createElement("label");
-    wrap.className = "mdui-control__inline";
+    wrap.className = "yamd-control__inline";
     const input = document.createElement("input");
     input.type = "radio";
     if (id) {
@@ -297,7 +297,7 @@ function buildControl(field, kind, inForm) {
     wrap.appendChild(input);
     if (field.title) {
       const t = document.createElement("span");
-      t.className = "mdui-control__title";
+      t.className = "yamd-control__title";
       t.textContent = String(field.title);
       wrap.appendChild(t);
     }

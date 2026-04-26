@@ -1,5 +1,5 @@
-import yaml from "yaml";
-import { parse } from "marked";
+import yaml from "https://esm.sh/yaml@2.8.0?bundle";
+import { parse } from "https://esm.sh/marked@16.0.0";
 
 const FENCE = /^```(\w*)\r?\n([\s\S]*?)\r?\n```/gm;
 const MD = { gfm: true, breaks: false, async: false };
