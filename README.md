@@ -64,19 +64,15 @@ Open **http://127.0.0.1:8080/** (host `8080` → container `3456`). No `docker p
 
 ## Where everything lives
 
-| In the repo                 | Role                                                                                                                                                                      |
-| --------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [`content/`](content/)      | Your Markdown and the bundled manual                                                                                                                                    |
-| [`pages.yml`](pages.yml)    | Nav tree and default landing page                                                                                                                                         |
-| [`src/`](src/)              | ESM engine: `document.js` / `render*`, `site-nav.js` (nav + path ↔ hash), `nav-search.js` (filter index on focus)                                                         |
-| [`index.html`](index.html)  | App shell, `importmap` for [marked](https://github.com/markedjs/marked) and [yaml](https://github.com/eemeli/yaml) from a CDN (no `npm install` required for the browser)   |
+| In the repo                | Role                                                                                                                                                                      |
+| -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [`content/`](content/)     | Your Markdown and the bundled manual                                                                                                                                      |
+| [`pages.yml`](pages.yml)   | Nav tree and default landing page                                                                                                                                         |
+| [`src/`](src/)             | ESM engine: `document.js` / `render*`, `site-nav.js` (nav + path ↔ hash), `nav-search.js` (filter index on focus)                                                         |
+| [`index.html`](index.html) | App shell, `importmap` for [marked](https://github.com/markedjs/marked) and [yaml](https://github.com/eemeli/yaml) from a CDN (no `npm install` required for the browser) |
 
 > **For GitHub’s “About” field:** _yamd — yet another markdown: YAML + Markdown, humanized docs, zero backend. GFM, frontmatter, fenced `ui` blocks, compile → render, vanilla ESM, static deploy._
 
 ## License
 
 [MIT](LICENSE)
-
-## Topics (for GitHub search)
-
-`yamd`, `markdown`, `yaml`, `es-modules`, `static-site`, `github-pages`, `github-actions`, `form`, `documentation`, `no-build`, `declarative`, `documentation-generator`, `client-side-search`
