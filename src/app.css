@@ -33,7 +33,7 @@
   --code-radius: 0.3125rem;
 
   --font: "Inter var", "InterVariable", "Inter", system-ui, ui-sans-serif, Roboto, "Open Sans", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji", sans-serif;
-  --mono: "Iosevka", "jbmono", ui-monospace, "JetBrains Mono", "SF Mono", "Cascadia Code", Consolas, "Liberation Mono", Menlo, monospace;
+  --mono: "Iosevka Extended", "jbmono", ui-monospace, "JetBrains Mono", "SF Mono", "Cascadia Code", Consolas, "Liberation Mono", Menlo, monospace;
 }
 
 @import url("https://cdn.jsdelivr.net/npm/@fontsource/iosevka@5/400.css");
