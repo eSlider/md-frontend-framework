@@ -107,6 +107,16 @@ For GitHub Pages specifically:
 - First visit after a deploy may briefly 404 — refresh once.
 - Deep links use the hash, e.g. `#examples/cookbook` → `content/examples/cookbook.md`. Subpath hosting works without rewrites.
 
+## Print output
+
+Printed pages use a clean layout: nav and top controls are hidden, content expands to full width, and a footer is rendered on every page.
+
+- Bottom-left: current date
+- Bottom-center: current document title
+- Bottom-right: page counter (`current / total`)
+
+This is designed for PDF export and hardcopy readability without editing your Markdown.
+
 ## Where to go next
 
 - **You want to write a page.** Open [Features and authoring model](#docs/features).

@@ -838,3 +838,53 @@ html.nav-open #backdrop {
   :root:not([data-theme="light"]) #theme-btn > span:first-child { display: none; }
   :root:not([data-theme="light"]) #theme-btn > span:last-child  { display: inline-flex; }
 }
+
+@media print {
+  @page {
+    margin: 14mm 12mm 18mm;
+    @bottom-left {
+      content: attr(data-print-date);
+      font-family: var(--font);
+      font-size: 10pt;
+      font-weight: 400;
+      color: rgba(0, 0, 0, 0.7);
+    }
+    @bottom-center {
+      content: attr(data-print-title);
+      font-family: var(--font);
+      font-size: 10pt;
+      font-weight: 400;
+      color: rgba(0, 0, 0, 0.7);
+    }
+    @bottom-right {
+      content: counter(page) " / " counter(pages);
+      font-family: var(--font);
+      font-size: 10pt;
+      font-weight: 400;
+      color: rgba(0, 0, 0, 0.7);
+    }
+  }
+
+  #menubar,
+  #nav,
+  #backdrop,
+  #theme-btn {
+    display: none !important;
+  }
+
+  .shell {
+    display: block;
+    max-width: none;
+    min-height: 0;
+    margin: 0;
+  }
+
+  .shell > #content {
+    padding: 0;
+    max-width: none;
+  }
+
+  body { margin: 0; }
+
+  #print-footer { display: none !important; }
+}

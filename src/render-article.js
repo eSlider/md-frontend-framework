@@ -108,6 +108,33 @@ function decorateHeadingLinks(section, contentPath) {
   }
 }
 
+/**
+ * @param {string} printDate
+ * @param {string} printTitle
+ */
+function upsertPrintFooter(printDate, printTitle) {
+  if (!document.body) {
+    return;
+  }
+  /** @type {HTMLElement | null} */
+  let footer = document.getElementById("print-footer");
+  if (!footer) {
+    footer = document.createElement("footer");
+    footer.id = "print-footer";
+    footer.setAttribute("aria-hidden", "true");
+    footer.innerHTML = '<span class="left"></span><span class="center"></span><span class="right"></span>';
+    document.body.appendChild(footer);
+  }
+  const left = footer.querySelector(".left");
+  const center = footer.querySelector(".center");
+  if (left) {
+    left.textContent = printDate;
+  }
+  if (center) {
+    center.textContent = printTitle;
+  }
+}
+
 export function render(root, { meta, parts }, options) {
   const contentPath = options && typeof options.contentPath === "string" ? options.contentPath : "content/docs/index.md";
   const act = typeof meta.form_action === "string" ? meta.form_action : undefined;
@@ -120,6 +147,15 @@ export function render(root, { meta, parts }, options) {
   if (meta.title) {
     document.title = String(meta.title) + " · yamd";
   }
+  const printTitle = document.title || TITLE;
+  const printDate = new Date().toISOString().slice(0, 10);
+  document.documentElement.setAttribute("data-print-title", printTitle);
+  document.documentElement.setAttribute("data-print-date", printDate);
+  if (document.body) {
+    document.body.setAttribute("data-print-title", printTitle);
+    document.body.setAttribute("data-print-date", printDate);
+  }
+  upsertPrintFooter(printDate, printTitle);
 
   const a = document.createElement("article");
   const first = parts[0];
