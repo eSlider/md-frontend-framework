@@ -5,7 +5,9 @@
   --yamd-muted: #666;
   --yamd-border: color-mix(in srgb, canvasText 18%, transparent);
   --yamd-radius: 10px;
-  --yamd-font: system-ui, "Segoe UI", Roboto, Ubuntu, "Helvetica Neue", sans-serif;
+  --yamd-font: universalSans, Inter, Roboto, "Open Sans", sans-serif, ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"
+  
+  /* system-ui, "Segoe UI", Roboto, Ubuntu, "Helvetica Neue", sans-serif; */
   --yamd-mono: ui-monospace, "Cascadia Code", "Fira Code", Consolas, monospace;
 }
 

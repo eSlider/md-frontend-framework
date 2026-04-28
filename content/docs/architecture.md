@@ -10,7 +10,7 @@ description: "compile → parts → render; modules in src/."
 ## Data flow
 
 ```mermaid
-flowchart LR
+flowchart BT
   A["Content delivery\n(string)"] --> B["compile(raw)\n(document.js)"]
   B --> C["{ meta, parts }"]
   C --> D["render(root, doc)\n(render.js)"]
@@ -24,14 +24,14 @@ flowchart LR
 
 ## Main modules (under `src/`)
 
-| File | Role |
-|------|------|
-| `document.js` | Frontmatter, fence split, `marked` for body, `compile` output |
-| `render.js` | Puts `parts` into the article: sections + `render-ui.js` for UI |
-| `render-ui.js` | Declarative YAML form → DOM (inputs, `type: form`, nested `items`) |
-| `site-nav.js` | `pages.yml`, hash ↔ path, left nav, `collectPageEntriesForSearch`; used from `main.js` |
+| File            | Role                                                                                                                  |
+| --------------- | --------------------------------------------------------------------------------------------------------------------- |
+| `document.js`   | Frontmatter, fence split, `marked` for body, `compile` output                                                         |
+| `render.js`     | Puts `parts` into the article: sections + `render-ui.js` for UI                                                       |
+| `render-ui.js`  | Declarative YAML form → DOM (inputs, `type: form`, nested `items`)                                                    |
+| `site-nav.js`   | `pages.yml`, hash ↔ path, left nav, `collectPageEntriesForSearch`; used from `main.js`                                |
 | `nav-search.js` | Filter field + index on **focus**; passes a `Set` of matching paths to `renderNavTree` to hide non-matching nav items |
-| `main.js` | Fetch `pages.yml` + markdown, routing, nav + search + mobile drawer |
+| `main.js`       | Fetch `pages.yml` + markdown, routing, nav + search + mobile drawer                                                   |
 
 Source: repo [`src/`](https://github.com/eSlider/yamd/tree/main/src) (not served as a directory index on the static site).
 
