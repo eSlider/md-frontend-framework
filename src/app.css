@@ -9,6 +9,9 @@
   --mono: "Iosevka", ui-monospace, "Cascadia Code", "Fira Code", Consolas, monospace;
 }
 
+@import url("https://rsms.me/inter/inter.css");
+@import url("https://rsms.me/iosevka/iosevka.css");
+
 :root[data-theme="light"] { color-scheme: light; }
 :root[data-theme="dark"]  { color-scheme: dark; }
 
@@ -339,13 +342,14 @@ html.nav-open #backdrop {
 .md pre,
 .md code {
   font-family: var(--mono);
-  font-size: 0.9em;
+  font-size: 1em;
 }
 .md pre {
   padding: 0.85rem 1rem;
   border: 1px solid var(--border);
   border-radius: var(--radius);
   overflow: auto;
+  line-height: 1.55;
   background: color-mix(in srgb, canvas 92%, black 8%);
 }
 .md pre.prism {
