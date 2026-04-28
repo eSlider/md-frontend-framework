@@ -46,6 +46,18 @@ let pathFilterCounts = null;
  * @param {() => void} fn
  */
 function whenDocumentReady(fn) {
+
+  // Apply explicit theme from localStorage, otherwise fallback to OS/browser theme.
+  (function () {
+    try {
+      var t = localStorage.getItem("yamd-theme");
+      if (t !== "light" && t !== "dark") {
+        t = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+      }
+      document.documentElement.setAttribute("data-theme", t);
+    } catch (e) {}
+  })();
+
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", fn, { once: true });
   } else {

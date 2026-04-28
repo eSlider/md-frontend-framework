@@ -75,6 +75,20 @@ Open **http://127.0.0.1:8080/** (host `8080` → container `3456`). No `docker p
 
 > **For GitHub’s “About” field:** _yamd — yet another markdown: YAML + Markdown, humanized docs, zero backend. GFM, frontmatter, fenced `ui` blocks, compile → render, vanilla ESM, static deploy._
 
+## Author
+
+**Andriy Oblivantsev** — software engineer, building tools that survive their own framework.
+
+- GitHub: [@eSlider](https://github.com/eSlider)
+- Email: [eslider@gmail.com](mailto:eslider@gmail.com)
+- Origin of the project: a personal frustration with doc tools that age faster than the docs themselves. yamd is the answer — a folder of `.md` you can still open in ten years, with or without this engine.
+
+If yamd helps you, the most useful thing you can do is **star the [repository](https://github.com/eSlider/yamd)** and tell one person who suffers under heavier doc stacks. That is the only growth loop the project has, and it works.
+
+### Credits
+
+Visual language adapted from [rsms.me](https://rsms.me/) by **Rasmus Andersson** — typography, palette, code/blockquote/table treatment. yamd uses [Inter](https://rsms.me/inter/) (Rasmus Andersson) and [Iosevka](https://github.com/be5invis/Iosevka) (Belleve Invis).
+
 ## License
 
 [MIT](LICENSE)
