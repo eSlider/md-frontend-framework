@@ -1,0 +1,49 @@
+# Landing when no hash: this key, or first `path` in the tree.
+# Deep links: path under `content/`, e.g. #examples/cookbook -> content/examples/cookbook.md
+default_path: content/start.md
+
+nav:
+
+  - title: Start here
+    path: content/start.md
+    items:
+      - title: Product overview
+        path: content/docs/index.md
+      - title: Get started
+        path: content/docs/get-started.md
+      - title: Information architecture
+        path: content/docs/site-map.md
+
+  - title: Authoring guide
+    items:
+      - title: Features and authoring model
+        path: content/docs/features.md
+      - title: Philosophy and constraints
+        path: content/docs/philosophy.md
+
+  - title: Technical reference
+    items:
+      - title: Architecture
+        path: content/docs/architecture.md
+      - title: Security model
+        path: content/docs/security.md
+
+  - title: Examples library
+    items:
+      - title: Live demo
+        path: content/example.md
+      - title: Forms
+        path: content/examples/forms.md
+      - title: Cookbook
+        path: content/examples/cookbook.md
+      - title: Form patterns
+        path: content/examples/patterns.md
+      - title: Research
+        path: content/examples/research.md
+
+  - title: Product notes
+    items:
+      - title: Specs
+        path: content/specs.md
+      - title: Idea and contract
+        path: content/idea.md

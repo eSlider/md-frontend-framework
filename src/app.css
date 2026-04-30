@@ -32,13 +32,29 @@
   --radius: 10px;
   --code-radius: 0;
 
-  --font: "Inter var", "InterVariable", "Inter", system-ui, ui-sans-serif, Roboto, "Open Sans", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji", sans-serif;
-  --mono: "Iosevka Extended", "jbmono", ui-monospace, "JetBrains Mono", "SF Mono", "Cascadia Code", Consolas, "Liberation Mono", Menlo, monospace;
+  --font: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --mono: "JetBrains Mono", "Iosevka Extended", "jbmono", ui-monospace, "SF Mono", "Cascadia Code", Consolas, "Liberation Mono", Menlo, monospace;
 }
 
 @import url("https://cdn.jsdelivr.net/npm/@fontsource/iosevka@5/400.css");
 @import url("https://cdn.jsdelivr.net/npm/@fontsource/iosevka@5/700.css");
-@import url("https://rsms.me/inter/inter.css");
+@import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap");
+
+@font-face {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url("https://rsms.me/inter/font-files/InterVariable.woff2?v=4.1") format("woff2");
+}
+
+@font-face {
+  font-family: "Inter";
+  font-style: italic;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url("https://rsms.me/inter/font-files/InterVariable-Italic.woff2?v=4.1") format("woff2");
+}
 
 :root[data-theme="light"] { color-scheme: light; }
 :root[data-theme="dark"]  { color-scheme: dark; }
@@ -91,7 +107,7 @@ html {
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
   font-synthesis: none;
-  font-feature-settings: "liga" 1, "calt" 1;
+  font-feature-settings: "ss01" 1, "ss02" 1, "ss03" 1, "ss08" 1;
 }
 
 body {
@@ -100,6 +116,7 @@ body {
   background: var(--bg);
   color: var(--fg);
   font: 400 16px/1.5 var(--font);
+  font-feature-settings: "ss01" 1, "ss02" 1, "ss03" 1, "ss08" 1;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -396,6 +413,10 @@ html.nav-open #backdrop {
 .md h1 {
   font-size: 3.2rem;
   font-weight: 600;
+  font-style: italic;
+  font-feature-settings: "ss01" 1, "ss03" 1, "ss04" 1;
+  font-variation-settings: "opsz" 16.77, "wght" 400;
+  font-optical-sizing: none;
   letter-spacing: -0.01em;
   line-height: 1.0;
   color: var(--fg-bright);
@@ -404,6 +425,10 @@ html.nav-open #backdrop {
 .md h2 {
   font-size: 1.6rem;
   font-weight: 600;
+  font-style: italic;
+  font-feature-settings: "ss01" 1, "ss03" 1, "ss04" 1;
+  font-variation-settings: "opsz" 16.77, "wght" 500;
+  font-optical-sizing: none;
   letter-spacing: -0.01em;
   line-height: 1.8rem;
   margin: 2.4rem 0 1.2rem;
@@ -498,6 +523,9 @@ html.nav-open #backdrop {
 }
 .md h1, .md h2, .md h3, .md h4, .md h5, .md h6 {
   scroll-margin-top: 0.9rem;
+  padding-left: 24px;
+  margin-left: -17px;
+  background-color: color-mix(in srgb, var(--bg) 94%, var(--fg) 6%);
 }
 .md h1 > a.heading-link,
 .md h2 > a.heading-link,
@@ -537,8 +565,12 @@ html.nav-open #backdrop {
 .md blockquote > :last-child { margin-bottom: 0; }
 
 .md table {
-  display: table;
-  width: 100%;
+  display: block;
+  width: max-content;
+  min-width: 100%;
+  max-width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
   border-collapse: collapse;
   border-top: 1px solid var(--border);
   border-right: 1px solid var(--border);
@@ -560,7 +592,6 @@ html.nav-open #backdrop {
 .md tt,
 .md kbd {
   font-family: var(--mono);
-  font-size: var(--font-size);
   font-feature-settings: "calt" 0;
   line-height: inherit;
 }
@@ -575,12 +606,9 @@ html.nav-open #backdrop {
   text-underline-offset: xxx-small !important;
   text-decoration-skip-ink: auto !important;
 
-  /* Wrap all */
-  white-space: pre-wrap;
-  word-break: break-word;
-  word-wrap: break-word;
-  word-break: break-all;
-  word-wrap: break-word;
+  white-space: pre;
+  word-break: normal;
+  word-wrap: normal;
 
 }
 
@@ -591,6 +619,7 @@ html.nav-open #backdrop {
   border-radius: 0.3em;
   padding: 0 0.3em;
   white-space: pre;
+  font-size: var(--code-font-size);
 }
 .md h1 code, .md h2 code, .md h3 code,
 .md h4 code, .md h5 code, .md h6 code {
@@ -613,15 +642,16 @@ html.nav-open #backdrop {
   border-radius: var(--code-radius);
   padding: 0.75rem 1rem;
   overflow-x: auto;
+  overflow-y: hidden;
   line-height: 1.5;
-  white-space: pre-wrap;
-  line-break: loose;
+  white-space: pre;
+  line-break: auto;
 }
 .md pre > code {
   background: none;
   padding: 0;
   font-weight: inherit;
-  font-size: inherit;
+  font-size: 13px;
   white-space: pre;
 }
 .md pre.prism {
@@ -640,7 +670,7 @@ html.nav-open #backdrop {
   right: 0.55rem;
   z-index: 1;
   border: 1px solid color-mix(in srgb, #fff 24%, transparent);
-  border-radius: 0.35rem;
+  /*border-radius: 0.35rem;*/
   background: color-mix(in srgb, #000 20%, transparent);
   color: #f8f8f2;
   font: inherit;
@@ -670,7 +700,7 @@ html.nav-open #backdrop {
 .ui { margin: 1.5rem 0; }
 .ui > form,
 .ui > div {
-  border: 1px solid var(--border);
+  /*border: 1px solid var(--border);*/
   border-radius: var(--radius);
   padding: 1rem 1.1rem 1.15rem;
   background: color-mix(in srgb, var(--bg) 96%, var(--fg) 4%);
@@ -723,15 +753,19 @@ html.nav-open #backdrop {
   align-items: center;
   padding: 0.45rem 0.95rem;
   border: 1px solid var(--border);
-  border-radius: 999px;
+  border-radius: var(--radius);
   background: color-mix(in srgb, var(--bg) 92%, var(--fg) 8%);
   font: inherit;
   font-weight: 600;
   cursor: pointer;
 }
+
 .ui .control > button:hover { filter: brightness(1.05); }
 @media (prefers-reduced-motion: reduce) {
-  .ui .control > button:hover { filter: none; }
+  .ui .control > button:hover {
+    filter: none;
+    background-color: var(--bg) 50%;
+  }
 }
 
 .ui fieldset {
@@ -742,7 +776,7 @@ html.nav-open #backdrop {
 }
 .ui fieldset.nested {
   border-style: dashed;
-  border-radius: 8px;
+  border-radius: var(--radius);
   padding: 0.4rem 0.65rem 0.5rem;
 }
 .ui fieldset > legend {
@@ -760,10 +794,10 @@ html.nav-open #backdrop {
   max-width: 100%;
   overflow-x: auto;
   overflow-y: hidden;
-  border: 0;
   border-radius: 0;
   background: transparent;
-  border: 1px solid var(--border);
+  border: 1px solid rgb(230 228 228);
+  /*border: 1px solid var(--border);*/
 }
 .mermaid svg {
   max-width: 100%;

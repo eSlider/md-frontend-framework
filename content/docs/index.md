@@ -22,6 +22,7 @@ If you delete yamd tomorrow, your docs still exist as readable Markdown. **That 
 ## What you get out of the box
 
 - Multi-page docs site rendered in the browser.
+- App shell with responsive menu bar, backdrop overlay, and a built-in light/dark theme toggle.
 - Deterministic deep links and routing from `pages.yml`.
 - Sidebar filter that narrows the tree as you type.
 - Optional Mermaid diagrams and Prism syntax highlighting, loaded only when needed.
