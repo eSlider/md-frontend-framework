@@ -3,6 +3,19 @@
 All notable changes to this project are documented in this file.  
 This project is pre-1.0; breaking changes are possible between releases.
 
+## [0.1.4-alpha.2] — 2026-04-30
+
+Pre-release **alpha** focused on filter UX polish in navigation and rendered content.
+
+### Highlights
+
+- **In-article highlight:** Active filter value is now highlighted in rendered HTML blocks (including headings) via `.filter-value`
+- **First-hit focus + next-hit shortcut:** First content match auto-scrolls into view, and **`Alt+N`** jumps to the next highlighted match
+- **Smoother focus behavior:** Focusing the filter with an existing value no longer flashes the full nav tree while the index loads
+- **Docs refresh:** README and in-app manual pages updated for the new filter behavior and keyboard flow
+
+[0.1.4-alpha.2]: https://github.com/eSlider/yamd/releases/tag/v0.1.4-alpha.2
+
 ## [0.1.4-alpha.1] — 2026-04-26
 
 Pre-release **alpha** after 0.1.3, focused on **nav filter / search** and **container** publishing.

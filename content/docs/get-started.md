@@ -49,6 +49,9 @@ Internal links use a hash and the path under `content/` — no `content/` segmen
 
 - Press **`/`** to focus the filter field.
 - Type to narrow the nav tree in place.
+- Matching text is highlighted inside rendered page content too.
+- The first match scrolls into view automatically.
+- Press **`Alt+N`** to jump to the next highlighted match.
 - Press **`Esc`** to clear and restore.
 
 The index loads only when you focus the field. You pay nothing until you use it.

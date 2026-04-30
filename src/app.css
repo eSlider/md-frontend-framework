@@ -296,6 +296,11 @@ body.nav-lock {
   font: inherit;
 }
 
+.filter-value.is-active {
+  outline: 1px solid color-mix(in srgb, var(--fg) 42%, transparent);
+  outline-offset: 1px;
+}
+
 #nav .count {
   font-weight: 600;
   color: var(--muted);

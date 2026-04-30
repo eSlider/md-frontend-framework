@@ -33,7 +33,8 @@ flowchart BT
 | `render-prism.js`     | Lazy Prism syntax highlighter for other code fences                                                                   |
 | `render-enrich.js`    | Orchestrates lazy renderers (Mermaid first, then Prism)                                                               |
 | `site-nav.js`         | `pages.yml`, hash ↔ path, left nav, `collectPageEntriesForSearch`; used from `main.js`                                |
-| `nav-search.js`       | Filter field + index on **focus**; passes a `Set` of matching paths to `renderNavTree` to hide non-matching nav items |
+| `nav-search.js`       | Filter field + index on **focus**; computes matching paths/counts and keeps filtering smooth while index loads         |
+| `filter-highlight.js` | In-article text highlight for current filter value; returns first hit for auto-scroll / keyboard navigation             |
 | `mobile-nav.js`       | Mobile drawer behavior: hamburger toggle, scrim, body scroll lock                                                     |
 | `md-rewrite-links.js` | Rewrites repo-relative `*.md` links in HTML to the app’s deep-link hash                                               |
 | `main.js`             | Fetch `pages.yml` + markdown, routing, nav + search + mobile drawer                                                   |

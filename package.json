@@ -1,6 +1,6 @@
 {
   "name": "yamd",
-  "version": "0.1.4-alpha.1",
+  "version": "0.1.4-alpha.2",
   "description": "yamd — yet another markdown (YAML + Markdown): a humanized documentation engine with zero backend for any project with .md files. GFM, frontmatter, fenced ui blocks, compile → render, vanilla ESM, GitHub Pages–ready.",
   "type": "module",
   "private": false,

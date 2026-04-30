@@ -42,6 +42,7 @@ let pathFilter = null;
 let pathFilterQuery = "";
 /** @type {Map<string, number> | null} — per-page min term counts (normalized path → count) when filtering */
 let pathFilterCounts = null;
+let activeFilterMatchIndex = -1;
 
 /**
  * @returns {{ contentPath: string | undefined, headingSlug: string | undefined }}
@@ -128,6 +129,44 @@ function scrollToFilterMatch(target) {
     return;
   }
   target.scrollIntoView({ block: "center", behavior: "auto" });
+}
+
+/**
+ * @returns {HTMLElement[]}
+ */
+function getFilterMatches() {
+  if (!el) {
+    return [];
+  }
+  return Array.from(el.querySelectorAll(".filter-value"));
+}
+
+/**
+ * @param {HTMLElement | null} target
+ */
+function setActiveFilterMatch(target) {
+  const matches = getFilterMatches();
+  for (const m of matches) {
+    m.classList.remove("is-active");
+  }
+  if (!target) {
+    activeFilterMatchIndex = -1;
+    return;
+  }
+  const idx = matches.indexOf(target);
+  activeFilterMatchIndex = idx;
+  target.classList.add("is-active");
+}
+
+function focusNextFilterMatch() {
+  const matches = getFilterMatches();
+  if (!matches.length) {
+    return;
+  }
+  const next = (activeFilterMatchIndex + 1) % matches.length;
+  const target = matches[next];
+  setActiveFilterMatch(target);
+  scrollToFilterMatch(target);
 }
 
 /**
@@ -235,6 +274,7 @@ function drawNav(/** @type {string} */ rel) {
           pathFilterCounts = pathCounts;
           drawNav(currentLogicalPath());
           const firstHit = applyFilterHighlight(el, pathFilterQuery);
+          setActiveFilterMatch(firstHit);
           scrollToFilterMatch(firstHit);
         },
       },
@@ -290,6 +330,7 @@ async function go(/** @type {string|undefined} */ explicitPath) {
     render(el, doc, { contentPath: rel });
     await runLazyEnrichers(el);
     const firstHit = applyFilterHighlight(el, pathFilterQuery);
+    setActiveFilterMatch(firstHit);
     if (route.headingSlug) {
       scrollToHeading(route.headingSlug);
     } else {
@@ -312,6 +353,21 @@ whenDocumentReady(() => {
   });
 
   setupThemeSwitcher(document.getElementById("theme-btn"));
+
+  document.addEventListener("keydown", (e) => {
+    if (!e.altKey || e.key.toLowerCase() !== "n") {
+      return;
+    }
+    const t = e.target;
+    if (t instanceof HTMLInputElement || t instanceof HTMLTextAreaElement || t instanceof HTMLSelectElement) {
+      return;
+    }
+    if (t instanceof HTMLElement && t.isContentEditable) {
+      return;
+    }
+    e.preventDefault();
+    focusNextFilterMatch();
+  });
 
   window.addEventListener("popstate", () => {
     void go();
