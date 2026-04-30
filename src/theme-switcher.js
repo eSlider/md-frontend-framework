@@ -9,26 +9,30 @@
 const STORAGE_KEY = "yamd-theme";
 const DARK_QUERY = "(prefers-color-scheme: dark)";
 
+// Enum
+export const Themes = {
+  LIGHT: "light",
+  DARK: "dark",
+};
+
 /**
  * @returns {"light" | "dark" | null}
  */
 function getStoredTheme() {
-  try {
-    const v = localStorage.getItem(STORAGE_KEY);
-    return v === "light" || v === "dark" ? v : null;
-  } catch {
-    return null;
-  }
+    return localStorage.getItem(STORAGE_KEY);
 }
 
+/**
+ * @returns {"light" | "dark"}
+ */
+function getNextTheme() {
+  return getEffectiveTheme() === Themes.DARK ? Themes.LIGHT : Themes.DARK;
+}
 /**
  * @param {"light" | "dark"} theme
  */
 function setStoredTheme(theme) {
-  try {
-    localStorage.setItem(STORAGE_KEY, theme);
-  } catch {
-  }
+  localStorage.setItem(STORAGE_KEY, theme);
 }
 
 /**
@@ -39,7 +43,7 @@ function getEffectiveTheme() {
   if (stored) {
     return stored;
   }
-  return window.matchMedia(DARK_QUERY).matches ? "dark" : "light";
+  return window.matchMedia(DARK_QUERY).matches ? Themes.DARK : Themes.LIGHT;
 }
 
 /**
@@ -59,17 +63,16 @@ export function setupThemeSwitcher(button) {
   }
 
   function refresh() {
-    const eff = getEffectiveTheme();
-    const next = eff === "dark" ? "light" : "dark";
-    const label = `Switch to ${next} theme`;
+    const label = `Switch to ${(getNextTheme())} theme`;
+
     button.setAttribute("aria-label", label);
     button.title = label;
   }
 
   refresh();
-
   button.addEventListener("click", () => {
-    const next = getEffectiveTheme() === "dark" ? "light" : "dark";
+
+    const next = getNextTheme();
     setStoredTheme(next);
     applyTheme(next);
     refresh();

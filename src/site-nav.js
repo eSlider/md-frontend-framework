@@ -20,7 +20,7 @@ function normalizePagesRoot(/** @type {unknown} */ raw) {
   if (Array.isArray(raw)) {
     return { defaultPath: null, items: raw.map(sanitizeItem).filter(Boolean) };
   }
-  if (typeof raw === "object" && raw !== null) {
+  if (typeof raw === "object") {
     const o = /** @type {Record<string, unknown>} */ (raw);
     const d =
       typeof o.default_path === "string" ? o.default_path :
@@ -48,7 +48,7 @@ function sanitizeItem(/** @type {Record<string, unknown> | null} */ x) {
 /**
  * @param {NavItem[]} items
  * @param {string | null} [ymlDefault]
- * @param {string} [fallback] — when tree has no paths, e.g. "content/docs/index.md"
+ * @param {string} [fallback] — when a tree has no paths, e.g. "content/docs/index.md"
  */
 export function pickInitialPath(items, ymlDefault, fallback) {
   if (ymlDefault && String(ymlDefault).trim()) {
